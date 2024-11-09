@@ -17,7 +17,7 @@ int main() {
     }
   }
 
-  printf("Spazi: %d\nTabulazioni: %d\nNewline: %d\n", spazi, tab, newline);
+  
 
   return 0;
 }
