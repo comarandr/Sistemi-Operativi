@@ -1,24 +1,21 @@
 #include <stdio.h>
-
-int main(){
-    int n = 0;
-    int i = 0;
-    for(int c = getchar(); c != EOF; c = getchar()){
-        if(c ==' '){
-            if(i==0){
-                i++;
+//Scrivere un programma C che conti il numero di parole immesse sullo standard input
+ 
+int main(){ //le variabili sono passate come valori tra procedure
+    int wordCount = 0; // due contatori, n numero di parole, i per controllare se c'è uno spazio
+    int inWord = 0;
+    for(int c = getchar(); c != EOF; c = getchar()){ //
+        if(c ==' ' ){ //|| c == '\t' || c == '\n'){
+            if(inWord==1){
+                inWord=0;
             }
-        }
-        else{
-            if(i==1){
-                n++;
-                i=0;
+        }else{
+            if(inWord==0){
+                wordCount++;
+                inWord++;
             }
         }
     }
-    if(i==1){
-        n++;
-    }
-    printf("\n%d\n", n);
+    printf("\nNumero parole: %d\n", wordCount);
     return 0;
 }
