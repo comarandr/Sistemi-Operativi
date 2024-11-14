@@ -1,0 +1,132 @@
+SCHEMI BASH
+
+I file sono riferiti con il PATHNAME:
+- assoluto: /home/bianchi/progetto/a
+- relativo: progetto/a ~pwd: /home/bianchi
+
+NOTA: dir1/* rappresenta il nome di tutti i file dentro la cartella dir1
+
+SHELL & SESSIONE
+bash e altri tipi di SHELL
+- logout
+uscire dalla shell: $exit
+pulire lo schermo: $clear 
+
+Come vedere lista comandi: $history  --> [num. evento] [evento = comando]
+rieseguire ultimo comando: $!!
+eseguire un comando con numero evento: $ !num.evento 
+ricercare un evento: $![evento]   --> es $!ls cerca nella history list tutti i ls
+
+ricerca di un evento e sostituzione argomenti
+$ ![evento]:s/[stringa1]/[stringa2]/  ---> $[evento] [stringa1] --> $[evento] [stringa2]
+
+creare un alias: $alias nome_alias=comando_alias
+rimuovere alias: $unalias nome_alias
+
+METACARATTERI
+ * : stringa di 0 o più caratteri
+ ? : singolo carattere
+ [] : singolo carattere tra quelli elencati
+ {} : sequenza di stringe
+ >: redirezione output
+ >>: redirezione output append
+ <: redirezione input (input non da tastiera)
+ <<: redirezione input dalla linea di comando
+ 2>: redirezione messaggi errore
+
+ |: pipe, compone comandi a cascata, eseguiti in parallelo
+ ;: sequenza di comandi
+ ||: esecuzione condizionale, esegue se il precedente fallisce
+ &&: esecuzione condizionale, esegue se il precedente termina con successo 
+ (...): raggruppamento comandi
+ !: ripetizione comadni memorizzati history list
+
+QUOTING
+
+ \ : inibisce il metacarattere successivo
+ '': inibisce metacaratteri racchiusi
+ "": inibisce alcuni metacaratteri
+
+FILE E DIRECTORY
+cartella corrente: $pwd 
+spostarsi cartella: $ cd [pathname]  (nota: per accedere serve permesso esecuzione)
+spostarsi nella dir madre: $cd ..
+creare cartella: $mkdir [nome]
+creare più cartelle: $mkdir [path]/{dir1, dir2, dir3}   -> crea 3 cartelle dentro nel percorso
+rimuovere cartella: $rmdir [nome]
+rimuovere file: $rm [argomenti] f1 
+
+visualizzare elenco file: ls -[argomenti] [pathname]
+                            -l long
+                            -a nascosti
+                            -al nascosti & long
+                            -t in ordine di ultima modifica
+                            -S in ordine di dimensione decrescente
+                            -r in ordine inverso
+                            -R sottocartelle
+
+visualizzare elenco file per estensione: $ls [arg] *.estensione
+
+visualizzazione ls -l
+[tipofile][permessi] [num hardlink] [proprietario] [nomegruppo] [dim] [data ultima mod] [nomefile]
+
+-rwxrwxrwx 1 root root 5395 Jul 13 1998 ciao.txt
+
+tipofile: - file, d directory, l link, b block device, c character device
+permessi: [owner][group][world], r: read, w: write,x: execute, - permesso negato
+
+cambiare i permessi: $chmod [arg] [file]
+metodo ottale: $chmod 744 file --> $chmod 111 100 100 f1 [rwxr--r--]
+metodoclassico: $chmod u=rwx go=r f1     u=owner, g=group, o=world
+= imposta i comandi esattamente come seguono $chmod g=r  --> r--
++ aggiungeg permessi che seguono $chmod g+r f1  (-w- --> rw-)
+- toglie i permessi che seguono $chmod g-r f1 (rw- --> -w-)
+
+
+copiare un file f1 in f2: $cp [f1] [f2]    -> f2 può non esistere
+    -r : ricorsivo
+copiare: cp [options] 
+copiare più file in una dir: $cp [f1] ... [fn] [dir1]  -> obbligo cartertella ultimo argomento
+spostare/rinominare file: $mv f1 f2
+spostare più file: $mv [f1] ... [f2] [dir1]
+
+aggiorna data ultima modifica: $touch f1  -> se f1 non esiste viene creato (salvo arg -c o -h)
+
+
+PROCESSI E JOB
+vedere i processi dell'utente associati al terminale corrente: $ps
+    -a: tutti i processi di un terminale
+    -f: full listing
+    -e: anche processi non associati a un terminale
+    -l: long listing
+
+... (spiegare visualizzazione PID - ps)
+
+terminare un processo: $kill PID_processo
+processo sigkill: $kill -s kill PID_processo
+aprire un processo in background: $[comando] &
+vedere i job in esecuzione: $jobs
+resume del job in foreground: $fg
+resume del job in backgrounf: $bg
+terminare un job: $kill %numerojob
+informazioni sulla memoria: $top 
+
+
+
+VISUALIZZAZIONE
+visualizzare un file
+$cat f1 --> visualizzo l'intero file
+$more f1  --> scorro il testo
+$tail [-n] f1 --> ultime n righe [default n = 10]
+$head [-n] f1 --> prime n righe [default n = 10]
+
+$echo
+
+INODE E LINK 
+creazione hardlink: $ln 
+
+FILTRO
+numero di linee,parole,caratteri di un file: $wc [argomenti] [file]
+EDITOR
+
+SCRIPT
