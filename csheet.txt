@@ -1,0 +1,90 @@
+C Sheet
+
+--------- COMPILAZIONE UNIX -----------------
+$ clang programma.c (crea eseguibile a.out)
+$ ./a.out (esegue eseguibile a.out)
+
+oppure
+
+$clang nomeprogramma.c -o altronome (rinomica file output)
+
+-------- SEQUENZE DI ESCAPE-----------
+\n (newline - a capo), \t (tab), \\ (singola \), \" (doppio apice)
+-------- PREPROCESSING -----------------------
+# direttive del preprocessore
+#include <stdio.h> : standard input/output
+#include < fileHeader.h >: file con procedure, variabili, ecc 
+
+#define NOME valore (definire costante)
+
+come dichiarare funzione per controllo tipo:
+tipoRestituito nomeFunzione (tipo argomento, tipo argomento ...)
+
+----------TIPI------------------
+char,short int, int, long int, float, double, unsigned int
+----------SINTASSI BASE-----------
+cicli (if, for, while)
+if
+for
+while
+
+------ OPERATORI ------------------
+
+
+
+--------- FUNZIONI ----------------------
+
+tiporitornato nomeFunzione (listaParametri){ istruzione, return }
+
+dichiarazione variabile: tipo nomeVariabile = valore;
+int main(): { ... return 0; }  procedura che viene eseguita alla compilazione 
+
+printf("stringa"); printf("Stringadiformato", argomenti)
+"stringa di formato" -> %[formato][tipo]    es: %3.0f (3 cifre intere, 0 decimali, f = float)
+%d, %c, %s 
+
+scanf(): legge valori dallo standard input
+scaf("stringaSpecificadiFormato",&puntatore)
+
+INPUT 5 -> scaf(%d,&x) -> x = 5 -> printf(%d,x) -> OUTPUT 5 (da verificare)
+
+------ARRAY-----------
+tipo nomeArray[DIM] = {val1, ..., valn}    se {} vuote, tutto 0, se [DIM] omessa num elementi
+
+----PUNTATORI -------------
+tipo *nome = valore iniziale;
+
+adress off: &variabile (puntatore a una variabile)
+deferenziazione: *puntatore (accesso alla variabile puntata dal puntatore)
+
+puntatore array: *pa = &a[0] , int *p = nome_array
+
+nota: *p + i, = puntatore avanza di i posizioni rispetto array, i*sizeof(tipo) locazioni
+
+----- caratteri ----------
+int getchar(); 
+putchar(c)
+----- stringhe --------
+viste come array di caratteri 
+
+int strlen(char *s); restituisce la lunghezza della stringa 
+int strncmp(char *s1, char *s2, unsigned len); confronto lessicografico s1 e s2
+char *strncpy(char *dest, char *source, unsigned len); copia al massimo len caratteri di source in dest
+char *strncat(char *dest, char *source, unisgned len); concatena len char di source in dest
+
+NOTA: char *stringa = "Ciao mondo!"; NON VA BENE
+
+------- ARRAY DI PUNTATORI -----------------------
+
+matrix[n][m] = {{a11, a12, a13}, {a21,a22,a23}{a31,a32,a33}}
+matrix[i][j] = x;
+
+------- ALLLOCAZIONE DINAMICA -------------------
+void *malloc (unisigned n); 
+
+void * generico puntatore, n signed 
+
+free(puntatore); : libera memoria
+void *realloc (void *puntatore, unisgned new_size);
+void *calloc (unisigned count, unsigned size);
+

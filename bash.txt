@@ -92,6 +92,11 @@ spostare più file: $mv [f1] ... [f2] [dir1]
 
 aggiorna data ultima modifica: $touch f1  -> se f1 non esiste viene creato (salvo arg -c o -h)
 
+confronto file: 
+$cmp f1 f2 -> primo byte e numero di linea in cui f1 e f2 differiscono
+$diff f1 f2 -> lista di cambiamenti da apportare in f1 per renderlo come f2
+
+ricercare un file: $find [pathnames] [expression]
 
 PROCESSI E JOB
 vedere i processi dell'utente associati al terminale corrente: $ps
@@ -110,7 +115,7 @@ resume del job in foreground: $fg
 resume del job in backgrounf: $bg
 terminare un job: $kill %numerojob
 informazioni sulla memoria: $top 
-
+informazioni sul disco: $df
 
 
 VISUALIZZAZIONE
@@ -127,6 +132,7 @@ creazione hardlink: $ln
 
 FILTRO
 numero di linee,parole,caratteri di un file: $wc [argomenti] [file]
+
 EDITOR
 
 SCRIPT
