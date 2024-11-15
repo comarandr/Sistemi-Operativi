@@ -115,7 +115,7 @@ resume del job in foreground: $fg
 resume del job in backgrounf: $bg
 terminare un job: $kill %numerojob
 informazioni sulla memoria: $top 
-informazioni sul disco: $df
+informazioni su spazio occupato nel disco: $dfinformazioni sul disco: $df
 
 
 VISUALIZZAZIONE
