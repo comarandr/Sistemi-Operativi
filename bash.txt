@@ -97,6 +97,16 @@ $cmp f1 f2 -> primo byte e numero di linea in cui f1 e f2 differiscono
 $diff f1 f2 -> lista di cambiamenti da apportare in f1 per renderlo come f2
 
 ricercare un file: $find [pathnames] [expression]
+attraversa ricorsivamente le directory in [pathnames] applicando le regole [expression]
+expression può essere:  opzione
+                        condizione 
+                        azione
+
+esempi: 
+$find . -name '*.c' -print
+$find . -name '*.bak' -ls -exec rm {} \;
+$find /etc -type d -print 
+
 
 PROCESSI E JOB
 vedere i processi dell'utente associati al terminale corrente: $ps
@@ -115,7 +125,9 @@ resume del job in foreground: $fg
 resume del job in backgrounf: $bg
 terminare un job: $kill %numerojob
 informazioni sulla memoria: $top 
-informazioni su spazio occupato nel disco: $dfinformazioni sul disco: $df
+informazioni su spazio occupato nel disco: $df
+blocchi memoria occupati da una cartella: $du [cartella]
+
 
 
 VISUALIZZAZIONE
@@ -132,6 +144,44 @@ creazione hardlink: $ln
 
 FILTRO
 numero di linee,parole,caratteri di un file: $wc [argomenti] [file]
+contenuto di file senza linee adiacenti ripetute: $uniq file
+
+restituire linee di un input che contengono un determinato pattern:
+
+grep [options] pattern [filename]
+fgrep [options] pattern [filename]
+egrep [options] pattern [filename]
+
+opzioni: -i ignora maiuscole/minuscole
+         -l lista dei file che contengono il pattern
+         -n linee in output precedute dal numero di linea
+         -v linee che NON contengono il pattern
+         -w linee che contengono il pattern come parola completa
+         -x linee che coincidono perfettamente con il pattern
+
+ordinare linee input: $sort (default: alfabetico)
+opzioni: -b ignora spazi chiavi di ordinamento
+         -f ignora distinzione maiuscole/minuscole
+         -n considera numerica la chiave di ordinamento
+         -r ordina in modo decrescente
+         -o [f1] invia output al file f1
+         -t [s] usa s come separatore di campo
+         -k [s1,s2] usa i campi da s1 a s2 come chiavi di ordinamento, i successivi in caso di pareggio
+         -s rende stabile il confronto, senza passare ai successivi in caso di pareggio
+
+
+conversione di carattere: $tr (soltanto standard I/O, necessità di pipe/ridirezioni in caso contrario)
+$tr stringa1 stringa2  --> i caratteri in stringa1 vengono sostituiti con caratteri corrispondenti in stringa2
+
+opzioni: -c complemento 
+         -s squeeze, compressione
+         -d cancella caratteri
+
+estrarre colonne specifiche da linee di testo in input: $cut 
+opzioni: -d separatore
+         -f campo da estrarre
+
+combinare due righe corrispondenti di due file: $paste f1 f2 (delimitatore default : <tab>)
 
 EDITOR
 
