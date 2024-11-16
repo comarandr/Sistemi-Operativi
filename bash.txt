@@ -6,7 +6,7 @@ I file sono riferiti con il PATHNAME:
 
 NOTA: dir1/* rappresenta il nome di tutti i file dentro la cartella dir1
 
-SHELL & SESSIONE
+-------------------------SHELL & SESSIONE------------------------------------------
 bash e altri tipi di SHELL
 - logout
 uscire dalla shell: $exit
@@ -47,7 +47,7 @@ QUOTING
  '': inibisce metacaratteri racchiusi
  "": inibisce alcuni metacaratteri
 
-FILE E DIRECTORY
+-----------------------------------FILE E DIRECTORY-------------------------------------
 cartella corrente: $pwd 
 spostarsi cartella: $ cd [pathname]  (nota: per accedere serve permesso esecuzione)
 spostarsi nella dir madre: $cd ..
@@ -108,7 +108,7 @@ $find . -name '*.bak' -ls -exec rm {} \;
 $find /etc -type d -print 
 
 
-PROCESSI E JOB
+----------------------------PROCESSI E JOB------------------------------------------------
 vedere i processi dell'utente associati al terminale corrente: $ps
     -a: tutti i processi di un terminale
     -f: full listing
@@ -130,7 +130,7 @@ blocchi memoria occupati da una cartella: $du [cartella]
 
 
 
-VISUALIZZAZIONE
+-----------------------------VISUALIZZAZIONE----------------------------------------------
 visualizzare un file
 $cat f1 --> visualizzo l'intero file
 $more f1  --> scorro il testo
@@ -142,7 +142,7 @@ $echo
 INODE E LINK 
 creazione hardlink: $ln 
 
-FILTRO
+-----------------------------------------FILTRO------------------------------------------------
 numero di linee,parole,caratteri di un file: $wc [argomenti] [file]
 contenuto di file senza linee adiacenti ripetute: $uniq file
 
@@ -183,6 +183,55 @@ opzioni: -d separatore
 
 combinare due righe corrispondenti di due file: $paste f1 f2 (delimitatore default : <tab>)
 
-EDITOR
+editare testo passato da un comando all'altro in una pipeline:
+$sed [actions] [files]     nota: può prendere in input anche file
 
-SCRIPT
+opzioni: -e in caso di più azioni, precede le azioni
+         -f specifica file da cui leggere le azioni da fare
+
+sostituzione testo con sed:
+$sed s/expr/new/flags 
+expr: stringa da cercare, new: str da sostituire
+flags possibili:
+    - num tra 1 e 9 (quale occorrenza di expr sostituita, default 1 = prima)
+    - g: ogni occorrenza sostituita
+    - p: linea corrente viene stampata a video in caso di sostituzione
+    - n: silent mode, senza emettere output
+    -w [file1]: in caso di sostituzione la linea corrente viene accodata in file1 
+
+
+-------------------------SCRIPT--------------------------------------------------
+programma interpretato dalla shell scritto in comandi UNIX
+
+set -x
+set -v
+set -: annulla gli effetti di set -x, set -v
+
+assegnamento: variabile=valore
+accesso a una variabile $variabile
+
+rendere globale variabile (variabile d'ambiente): export
+
+variabili d'ambiente: 
+    -PS1: prompt primario
+    -PS2: prompt secondario
+    -PWD: pathname assoluto directory corrente
+    -UID: ID user corrente
+    -PATH: lista di pathname in cui la shell cerca i comandi
+    -HOME: pathname assoluto della home directory
+
+variabili speciali (parametro): $1,$2,...,$9 associate al primo, ... , nono parametro passato su linea di comando 
+
+aumentare numero parametri con shift a sx: shift
+
+variabili di stato automatiche, gestiscono lo stato
+exit status $?: valore in uscita dell'ultino comando (0 successo, errore altrimenti)
+    ~ assegnabile con exit n
+
+PID shell corrente: $$ (usato per genere nomi di file temporanei che siano unici)
+PID ultimo comando background: $!
+opzioni shell corrente: $-
+numero parametri forniti allo script su linea di comando: $#
+lista tutti i parametri passati allo script su linea di comando: $*,$@
+
+CONTROLLO DI FLUSSO
