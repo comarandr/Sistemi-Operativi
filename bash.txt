@@ -207,7 +207,7 @@ set -x
 set -v
 set -: annulla gli effetti di set -x, set -v
 
-assegnamento: variabile=valore
+assegnamento: variabile=valore (nota, = senza spazi è assegnazione)
 accesso a una variabile $variabile
 
 rendere globale variabile (variabile d'ambiente): export
@@ -235,3 +235,84 @@ numero parametri forniti allo script su linea di comando: $#
 lista tutti i parametri passati allo script su linea di comando: $*,$@
 
 CONTROLLO DI FLUSSO
+
+if condition_command
+then (exit 0) 
+    true_commands
+else (exit =/= 0)
+    false_commands
+fi
+
+in caso non sia valutabile l'exit status: 
+
+test expression (se vera exit = 0, altrimenti 1 )
+    espressioni che controllano attributi di un file f
+        -e [f]: 0 se f esiste
+        -f [f]: 0 se f esiste ed è un file ordinario
+        -d [f]: 0 se f esiste ed è una dir
+        -r [f]: 0 se f esiste ed è leggibile
+        -w [f]: 0 se f esiste ed è scrivibile
+        -x [f]: 0 se f esiste ed è eseguibile
+    espressioni su stringhe
+        -z str: 0 se str è lunga 0
+        -n str: 0 se str non è lunga 0
+        str1 = str2: 0 se str1 è uguale a str2 (nota = con spazi è confronto)
+        str1 != str2: 0 se str1 è diversa da str2
+    espressioni su valori numerici:
+        num1 -eq num2: 0 se uguali
+        num1 -ne num2: 0 se diversi
+        num1 -lt num2: 0 se num1 < num2
+        num1 -gt num2: 0 se num1 > num2
+        num1 -le num2: 0 se num1 <= num2
+        num1 -ge num2: 0 se num1 >= num2 
+    espressioni composte:
+        exp1 -a exp2: 0 se entrambe vedere (and)
+        exp1 -o exp2: 0 se è vera exp1 o exp2 (or)
+        ! exp : 0 se exp non è vera 
+        ( exp ): per cambiare ordine valutazione degli operatori (è necessario quoting)
+
+CICLO WHILE (finché vero continuo)
+
+while condition_command
+do  
+    commands
+done 
+
+CICLO UNTIL (finché falso continuo)
+
+until condition_command
+do
+    commands
+done
+
+CICLO FOR
+
+for var in wordlist
+do
+    commands
+done 
+
+CASE SELECTION
+
+case string in
+expression_1)
+    commands_1
+    ;;
+expression_2)
+    commands_2
+    ;;
+...
+*)
+    default_commands
+    ;;
+esac
+
+COMMAND SUBSTITUTION
+sostituire a un comando o pipeline quanto stampato sullo standard output dal comando stesso
+prevede uso dei ` ` backquote
+ esempio :
+> date
+ Tue Nov 19 17:50:10 2002
+ > vardata=`date`
+ > echo $vardata
+ Tue Nov 19 17:51:28 2002
