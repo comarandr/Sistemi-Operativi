@@ -1,0 +1,427 @@
+PROGRAMMI BASE IN C
+
+#include <stdio.h>
+
+int main() {
+    printf("hello, world!\n");
+    return 0; // non obbligatorio
+}
+
+-COSTRUTTO if
+(si aspetta espressione controllo tipo intero, 0 è falso)
+
+int main() {
+    int x = 0;
+
+    if (x)
+        printf("x è falso\n");
+    else
+        printf("x è vero\n");
+    return 0;
+}
+
+-COSTRUTTO WHILE
+
+int main() {
+    float fahr = 0;
+    printf("Tabella Fahrenheit-Celsius:\n");
+    while (fahr <= 300) {
+        float celsius = (5.0 / 9.0) * (fahr - 32.0);
+        printf("%3.0f °F -> %6.1f °C\n", fahr, celsius);
+        fahr = fahr + 20;
+    }
+    return 0;
+}
+
+-USO DELLE COSTANTI
+
+#define LOWER 0
+#define UPPER 300
+#define STEP 20
+
+int main() {
+    for (float fahr = LOWER; fahr <= UPPER; fahr = fahr + STEP)
+        printf("%3.0f °F -> %6.1f °C\n", fahr, (5.0 / 9.0) * (fahr - 32));
+    return 0;
+}
+
+-I/O CARATTERI, VERSIONE SEMPLIFICATA DEL cat
+
+-CICLO WHILE
+
+int main() {
+    int c = getchar();
+
+    while (c != EOF) {
+        putchar(c);
+        c = getchar();
+    }
+    return 0;
+}
+
+-CICLO FOR
+
+int main() {
+    for (int c = getchar(); c != EOF; c = getchar()) {
+        putchar(c);
+    }
+    return 0;
+}
+
+-COMANDO UNIX wc -c
+
+int main() {
+    long nc = 0;
+
+    while (getchar() != EOF) {
+        ++nc;
+    }
+    printf("%ld\n", nc);
+    return 0;
+}
+
+int main() {
+    long nc = 0;
+
+    for (; getchar() != EOF; ++nc);
+
+    printf("%ld\n", nc);
+    return 0;
+}
+
+-COMANDO UNIX wc -l
+
+int main() {
+    long nc = 0;
+
+    for (int c = getchar(); c != EOF; c = getchar())
+        if (c == '\n')
+            ++nc;
+
+    printf("%ld\n", nc);
+    return 0;
+}
+
+-DICHIARAZIONE E DEFINIZIONE FUNZIONE
+tipo_ritornato nome_funzione(lista_parametri);
+
+int factorial(int n);
+
+int factorial(int n) {
+    if (n == 0)
+        return 1;
+    else
+        return n * factorial(n - 1);
+}
+
+-ESEMPIO FUNZIONE POWER
+
+int power(int, int); // dichiarazione della funzione power
+
+int main() {
+    int n;
+    for (int i = 0; i < 10; i++)
+        printf("%d %3d %6d\n", i, power(2, i), power(-3, i));
+    return 0;
+}
+
+int power(int m, int n) {
+    int p = 1;
+    for (int i = 1; i <= n; i++)
+        p = p * m;
+    return p;
+}
+
+-FAKE SWAP (PASSAGGIO PER VALORE)
+
+void fake_swap(int x, int y) {
+    int temp = x;
+    x = y;
+    y = temp;
+}
+
+int main() {
+    int x = 42, y = 0;
+    fake_swap(x, y);
+    printf("x = %d, y = %d\n", x, y);
+    return 0;
+}
+
+-MEDIA PESATA ARRAY
+
+#define N_ESAMI 12
+
+int main() {
+    int voti[N_ESAMI] = {18, 30, 27, 20, 22, 24, 25, 26, 28, 29, 30, 30};
+    int crediti[N_ESAMI] = {12, 12, 12, 12, 6, 6, 6, 6, 6, 6, 6, 6};
+
+    int somma = 0, totale = 0;
+
+    for (int i = 0; i < N_ESAMI; i++) {
+        somma += voti[i] * crediti[i];
+        totale += crediti[i];
+    }
+
+    float media = (float)somma / totale;
+    printf("La mia media pesata è: %2.2f\n", media);
+    return 0;
+}
+
+-TABELLA VALORI SIN
+
+#include <math.h>
+
+#define N_CAMPIONI 10
+
+int main() {
+    float valori[N_CAMPIONI] = {0.0};
+    float step = 2 * M_PI / N_CAMPIONI; // M_PI è una costante definita in math.h, linker necessita flag -lm
+
+    for (int i = 0; i < N_CAMPIONI; i++) {
+        valori[i] = sin(i * step);
+    }
+
+    for (int i = 0; i < N_CAMPIONI; i++) {
+        printf("sin(%1.3f) = %1.3f\n", i * step, valori[i]);
+    }
+
+    return 0;
+}
+
+CASO DI ERRORE INDICE
+
+int main() {
+    int risposta = 42;
+    int valori[10] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+
+    // Azzeriamo l'array
+    for (int i = 0; i <= 10; i++) { // errore nel <=, stampa 0
+        valori[i] = 0;
+    }
+
+    printf("La risposta è: %d\n", risposta);
+    return 0;
+}
+
+-------------- PUNTATORI ----------------------------
+
+SWAP
+
+void swap(int *x, int *y) {
+    int temp = *x;
+    *x = *y;
+    *y = temp;
+}
+
+int main() {
+    int x = 42, y = 0;
+    swap(&x, &y);
+
+    printf("x: %d, y: %d\n", x, y);
+
+    return 0;
+}
+
+-SCANF
+
+int main() {
+    int x = 0;
+
+    printf("Inserisci un numero intero: ");
+    scanf("%d", &x);
+
+    printf("Il doppio di %d è %d\n", x, x * 2);
+    return 0;
+}
+
+-ESEMPIO
+
+#define SIZE 10
+
+int main() {
+    int array[SIZE] = {};
+    int val = 0;
+
+    printf("Inserisci un valore: ");
+    scanf("%d", &val);
+
+    for (int *p = array; p < array + SIZE; ++p) {
+        *p = val;
+    }
+
+    for (int i = 0; i < SIZE; ++i) {
+        printf("array[%d] = %d\n", i, array[i]);
+    }
+    return 0;
+}
+
+ESEMPIO 2
+
+#define SIZE 10
+
+void fill(int *, int, int,);
+
+int main(){
+    int array[SIZE] = {}, val = 0;
+
+    printf("inserisci un valore: ")
+    scanf("%d",&val);
+    for(int i = 0; i < SIZE; ++i)
+        printf("array[%d] = %d\n, i, array[i]);
+
+        return 0;
+}
+
+void fill(int *begin, int size, int value){
+    for(int *p = begin; p < begin + size; ++p)
+        *p = value
+}
+
+
+FUNZIONI SSCANF, SPRINTF, SNPRINTF
+
+USO DI MALLOC
+
+#include <stlin.h>
+
+int somma(int *array, int size){
+    int s=0;
+    for(int i=0; i<size; i++) s+=array[i];
+    return s;
+}
+
+int main(){
+    int n = 0;
+
+    printf("Uanti numeri verranno inseriti?");
+    scanf("%d",&n);
+    if(n == 0) 
+        return 0;
+
+    int *elementi = malloc(n * sizeof(int));
+
+    printf("Inserire i numeri: ");
+    for(int i = 0; i < n; ++i) scanf("%d", elemeneti + i);
+    printf("La somma dei numeri inseriti è : %d\n", somma(elementi, n));
+    return 0;
+}
+
+CREAZIONE DINAMICA DI DUE STRINGHE
+
+char *concat(char *str1, *str2){
+    int len = strlen(str1) + strlen(str2);
+    char *result = malloc (len + 1);
+
+    strcpy(result, str1);
+    strcat(result, str2);
+
+    return result;
+}
+
+LETTURA DI UN NUMERO ARBITRARIO DI VALORI
+
+void reverse(int *array, int size);
+
+int main(){
+    int size = 10;
+    int *array = malloc(size * sizeof(int));
+
+    int read = 0;
+    while (scanf("%d", &array[read]) == 1) {
+        if(++read == size){
+            size *= 2; 
+            array = realloc (array, size*sizeof(int));
+        }
+    }
+    reverse (array, read);
+    for(int i = 0; i < read; ++i){
+        printf("%d\n", array[i]);
+    }
+    free(array);
+    return 0;
+}
+
+IMPLEMENTAZIONE CALLOC
+
+void *calloc(unsigned count, unsigned size){
+    unsigned len = count * size;
+    char *mem = malloc(len);
+    for (int i = 0; i < len; ++i){
+        mem[i] = 0;
+    }
+    return mem;
+}
+
+DICHIARAZIONE STRUTTURA
+
+struct point{
+    float x;
+    float y;
+}
+
+
+LISTA CONCATENATA
+
+STRUTTURA NODO
+struct node{
+    int data;
+    struct node *next;
+};
+
+NUOVO NODO
+struct node *create(int data){
+    struct node *ptr = malloc (sizeof(struct node));
+    ptr->data = data;
+    ptr->next = NULL;
+
+    return ptr;
+}
+
+LUNGHEZZA
+
+int length(struct node *head){
+    int len = 0;
+    for (struct node *n = head; n; n = n->next){
+        ++len;
+    }
+    return len;
+}
+
+RICERCA ELEMENTO
+
+struct node *find(struct node *head, int data){
+    for(struct node *n = head; n; n = n->next){
+        if(n->data == data)
+        return n;
+    }
+    return NULL;
+}
+
+CONCATENAZIONE DUE LISTE
+
+struct node *last(struct node *head){
+    for(struct node *n = head; n; n = n->next){
+        if(n->next == NULL)
+            return n;
+        }
+    return null;
+    }
+
+struct node *append(struct node *head1; struct node *head2){
+    struct node *last1= last(head1);
+    last1->next = head2;
+
+    return head1;
+}
+
+ELIMINAZIONE LISTA
+
+void destroy(struct node *head){
+    struct node *next = head;
+
+    while(next){
+        struct node *n = next;
+        next = n->next;
+        free(n);
+    }
+}
