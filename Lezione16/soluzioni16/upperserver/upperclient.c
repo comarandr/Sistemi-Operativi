@@ -10,6 +10,7 @@
 #define MAXLENGTH 80
 
 #include "common.h"
+#include "freadline.h"
 
 int main()
 {
