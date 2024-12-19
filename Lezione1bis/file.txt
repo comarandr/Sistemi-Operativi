@@ -1,0 +1,7 @@
+Questo è un testo di prova che serve come ripasso di Sistemi Operativi.
+Sto scrivendo questo file senza particolari motivi.
+
+In UNIX a ogni file corrisponde un numero di inode, che è l'indice di un
+ array memorizzato su disco. Le cartelle sono tabelle che associano i nomi
+dei file a numeri inode. Ogni entry di una directory è un link. I link 
+possono essere hard oppure simbolici.
