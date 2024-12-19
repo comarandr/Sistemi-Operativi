@@ -6,26 +6,24 @@ I file sono riferiti con il PATHNAME:
 
 NOTA: `dir1/*` rappresenta il nome di tutti i file dentro la cartella dir1  
 
----------  
-
 #### SHELL & SESSIONE  
 
 bash e altri tipi di SHELL  
 logout  
 
-uscire dalla shell: `$exit`  
-pulire lo schermo: `$clear`  
+uscire dalla shell: `$ exit`  
+pulire lo schermo: `$ clear`  
 
-Come vedere lista comandi: `$history`  &rarr; [num. evento] [evento = comando]  
-rieseguire ultimo comando: `$!!`  
-eseguire un comando con numero evento: \$ !num.evento  
-ricercare un evento: $![evento]   &rarr; es \$!ls cerca nella history list tutti i ls  
+Come vedere lista comandi: `$ history`  &rarr; [num. evento] [evento = comando]  
+rieseguire ultimo comando: `$ !!`  
+eseguire un comando con numero evento: `$ !num.evento`  
+ricercare un evento: `$ ![evento]`   &rarr; es `$ !ls` cerca nella history list tutti i ls  
 
 ricerca di un evento e sostituzione argomenti  
-`$ ![evento]:s/[stringa1]/[stringa2]/`   `$[evento] [stringa1]` &rarr; `$[evento] [stringa2]`  
+`$ ![evento]:s/[stringa1]/[stringa2]/`   `$ [evento] [stringa1]` &rarr; `$ [evento] [stringa2]`  
 
-creare un alias: `$alias nome_alias=comando_alias`  
-rimuovere alias: `$unalias nome_alias`  
+creare un alias: `$ alias nome_alias=comando_alias`  
+rimuovere alias: `$ unalias nome_alias`  
 
 ###### METACARATTERI  
 
@@ -49,19 +47,19 @@ rimuovere alias: `$unalias nome_alias`
 ###### QUOTING  
 
  \ : inibisce il metacarattere successivo  
- '': inibisce metacaratteri racchiusi  
- "": inibisce alcuni metacaratteri  
-
-------  
+ ' ': inibisce metacaratteri racchiusi  
+ "  ": inibisce alcuni metacaratteri  
 
 #### FILE E DIRECTORY  
-cartella corrente: `$pwd`  
-spostarsi cartella: `$cd [pathname]`  (nota: per accedere serve permesso esecuzione)  
-spostarsi nella dir madre: `$cd ..`  
-creare cartella: `$mkdir [nome]`  
-creare più cartelle: `$mkdir [path]/{dir1, dir2, dir3}`   &rarr; crea 3 cartelle dentro nel percorso  
-rimuovere cartella: `$rmdir [nome]`  
-rimuovere file: `$rm [argomenti] f1`  
+
+cartella corrente: `$ pwd`  
+spostarsi cartella: `$ cd [pathname]`  (nota: per accedere serve permesso esecuzione)  
+spostarsi home: `$ cd` (senza argomenti)  
+spostarsi nella dir madre: `$ cd ..`  
+creare cartella: `$ mkdir [nome]`  
+creare più cartelle: `$ mkdir [path]/{dir1, dir2, dir3}`   &rarr; crea 3 cartelle dentro nel percorso  
+rimuovere cartella: `$ rmdir [nome]`  
+rimuovere file: `$ rm [argomenti] f1`  
 
 visualizzare elenco file:  
 >`$ls` [argomenti] [pathname]  
@@ -75,53 +73,59 @@ visualizzare elenco file:
 >`-r`:in ordine inverso  
 >`-R`:sottocartelle  
 
-visualizzare elenco file per estensione: `$ls [arg] *.estensione ` 
+visualizzare elenco file per estensione: `$ ls [arg] *.estensione ` 
 
-visualizzazione `$ls -l`  
+visualizzazione `$ ls -l`  
 
 [tipofile] [permessi] [num hardlink] [proprietario] [nomegruppo] [dim] [data ultima mod] [nomefile]  
 
 `-rwxrwxrwx 1 root root 5395 Jul 13 1998 ciao.txt  `
 
 tipofile: - file, d directory, l link, b block device, c character device  
-permessi: [owner] [group] [world], r: read, w: write,x: execute, - permesso negato  
-cambiare i permessi: `$chmod [arg] [file]`  
-metodo ottale: `$chmod 744 file` &rarr; `$chmod 111 100 100 f1` [rwxr--r--]  
-metodo classico: `$chmod u=rwx go=r f1`     u=owner, g=group, o=world  
-= imposta i comandi esattamente come seguono `$chmod g=r`  &rarr; r--  
-\+ aggiungeg permessi che seguono `$chmod g+r f1`  (-w- &rarr; rw-)  
-\- toglie i permessi che seguono `$chmod g-r` f1 (rw- &rarr; -w-)  
+cambiare i permessi: `$ chmod [arg] [file]`  
+metodo ottale: `$ chmod 744 file` &rarr; `$ chmod 111 100 100 f1` [rwxr--r--]  
+metodo classico: `$ chmod u=rwx go=r f1`     u=owner, g=group, o=world  
+= imposta i comandi esattamente come seguono `$ chmod g=r`  &rarr; r--  
+\+ aggiunge permessi che seguono `$ chmod g+r f1`  (-w- &rarr; rw-)  
+\- toglie i permessi che seguono `$ chmod g-r f1` (rw- &rarr; -w-)  
 
-copiare un file f1 in f2: `$cp [f1] [f2]`    &rarr; f2 può non esistere  
-    -r : ricorsivo  
-copiare: `cp [options]`  
-copiare più file in una dir: `$cp [f1] ... [fn] [dir1]`  &rarr; obbligo cartertella ultimo argomento  
-spostare/rinominare file: `$mv f1 f2`  
-spostare più file: `$mv [f1] ... [f2] [dir1]`  
+copiare un file f1 in f2: `$ cp [f1] [f2]`    &rarr; f2 può non esistere  
+    `-r` : ricorsivo  
+copiare: `$ cp [options]`  
+copiare più file in una dir: `$ cp [f1] ... [fn] [dir1]`  &rarr; obbligo cartella ultimo argomento  
+spostare/rinominare file: `$ mv f1 f2`  
+spostare più file: `$ mv [f1] ... [f2] [dir1]`  
 
-aggiorna data ultima modifica: `$touch f1`  &rarr; se f1 non esiste viene creato (salvo arg -c o -h)  
+aggiorna data ultima modifica: `$touch f1`  &rarr; se f1 non esiste viene creato (salvo arg `-c` o `-h`)  
 
 confronto file:  
-`$cmp f1 f2` &rarr; primo byte e numero di linea in cui f1 e f2 differiscono  
-`$diff f1 f2` &rarr; lista di cambiamenti da apportare in f1 per renderlo come f2  
+`$ cmp f1 f2` &rarr; primo byte e numero di linea in cui f1 e f2 differiscono  
+`$ diff f1 f2` &rarr; lista di cambiamenti da apportare in f1 per renderlo come f2  
 
-ricercare un file: $find [pathnames] [expression]  
+ricercare un file: 
+`$ find [pathnames] [expression]`  
 attraversa ricorsivamente le directory in [pathnames] applicando le regole [expression]  
-expression può essere:  opzione  
-                        condizione  
-                        azione  
+expression può essere: *opzione*, *condizione*, *azione*
 
 esempi:  
-`$find . -name '*.c' -print`  
-`$find . -name '*.bak' -ls -exec rm {} \;`  
-`$find /etc -type d -print`  
+`$ find . -name '*.c' -print`  
+`$ find . -name '*.bak' -ls -exec rm {} \;`  
+`$ find /etc -type d -print`  
 
--------  
+contare elementi di un file:  
+>`$ wc` [argomento] [file]
+
+>*opzioni:*
+>`-c` : numero di byte
+>`-m` : numero di caratteri
+>`-l` : numero di linee (line)
+>`-w` : numero di parole (word)
+> [default] : linee, parole, byte
 
 #### PROCESSI E JOB
 
 vedere i processi dell'utente associati al terminale corrente:  
-`$ps`  [argomenti]  
+`$ps  [argomenti]`  
 
 > *argomenti*:
 >`-a`: tutti i processi di un terminale  
@@ -130,33 +134,31 @@ vedere i processi dell'utente associati al terminale corrente:
 >`-l`: long listing  
 
 ... (spiegare visualizzazione PID - ps)  
-terminare un processo: `$kill PID_processo`  
-processo sigkill: `$kill -s kill PID_processo`  
+terminare un processo: `$ kill PID_processo`  
+processo sigkill: `$ kill -s kill PID_processo`  
 aprire un processo in background: `$[comando] &`  
-vedere i job in esecuzione: `$jobs`  
-resume del job in foreground: `$fg`  
-resume del job in background: `$bg`  
-terminare un job: `$kill %numerojob`  
-informazioni sulla memoria: `$top`  
-informazioni su spazio occupato nel disco: `$df`  
-blocchi memoria occupati da una cartella: `$du [cartella]`  
-
------
+vedere i job in esecuzione: `$ jobs`  
+resume del job in foreground: `$ fg`  
+resume del job in background: `$ bg`  
+terminare un job: `$ kill %numerojob`  
+informazioni sulla memoria: `$ top`  
+informazioni su spazio occupato nel disco: `$ df`  
+blocchi memoria occupati da una cartella: `$ du [cartella]`  
 
 #### VISUALIZZAZIONE
 
 visualizzare un file  
-`$cat f1` → visualizzo l'intero file  
-`$more f1` → scorro il testo  
-`$tail [-n] f1` → ultime n righe [default n = 10]  
-`$head [-n] f1` → prime n righe [default n = 10]  
+`$ cat [f1]` → visualizzo l'intero file  
+`$ more [f1]` → scorro il testo  
+`$ tail [-n] [f1]` → ultime n righe [default n = 10]  
+`$ head [-n] [f1]` → prime n righe [default n = 10]  
 
-`$echo`  
+`$ echo`  
 
 ###### INODE E LINK  
-creazione hardlink: `$ln`  
-
-------
+creazione hardlink: `$ln [file1] [link1]`  
+creazione link simbolico `ln -s [file1] [link1]`
+Posso creare link simbolici che puntano a link, creando catene fino a un massimo di 6 link simbolici.
 
 #### FILTRO
 
@@ -180,7 +182,7 @@ contenuto di file senza linee adiacenti ripetute: `$uniq [file]`
 >`-x`: linee che coincidono perfettamente con il pattern  
 
 ###### ordinare linee input:  
-`$sort` (default: alfabetico)  
+`$ sort` (default: alfabetico)  
 >*opzioni*:  
 >`-b` ignora spazi chiavi di ordinamento  
 >`-f` ignora distinzione maiuscole/minuscole  
@@ -192,9 +194,9 @@ contenuto di file senza linee adiacenti ripetute: `$uniq [file]`
 >`-s` rende stabile il confronto, senza passare ai successivi in caso di pareggio  
 
 ###### conversione di carattere: 
->`$tr` (soltanto standard I/O, necessità di pipe/ridirezioni in caso contrario)
+>`$ tr` (soltanto standard I/O, necessità di pipe/ridirezioni in caso contrario)
 
-> `$tr` _[stringa1]_ _[stringa2]_  &rarr; i caratteri in stringa1 vengono sostituiti con caratteri corrispondenti in stringa2  
+> `$ tr` _[stringa1]_ _[stringa2]_  &rarr; i caratteri in stringa1 vengono sostituiti con caratteri corrispondenti in stringa2  
 
 >*opzioni:*  
 >`-c` complemento  
@@ -202,24 +204,24 @@ contenuto di file senza linee adiacenti ripetute: `$uniq [file]`
 >`-d` cancella caratteri  
 
 ###### estrarre colonne specifiche da linee di testo in input: 
-`$cut`
+`$ cut`
 
 >*opzioni:*  
 >`-d` separatore  
 >`-f` campo da estrarre  
 
 ###### combinare due righe corrispondenti di due file: 
-`$paste f1 f2` (delimitatore default : \<tab>)  
+`$ paste f1 f2` (delimitatore default : \<tab>)  
 
 ###### editare testo passato da un comando all'altro in una pipeline:  
-`\$sed [actions] [files]`  nota: può prendere in input anche file  
+`$ sed [actions] [files]`  nota: può prendere in input anche file  
 
 >opzioni:  
 >`-e` in caso di più azioni, precede le azioni  
 >`-f` specifica file da cui leggere le azioni da fare  
 
 sostituzione testo con sed:  
->`$sed s/[expr]/[new]/[flags]`  
+>`$ sed s/[expr]/[new]/[flags]`  
 
 _s_: substitute, _expr_: stringa da cercare, _new_: stringa da sostituire  
 >flag possibili:  
@@ -229,9 +231,8 @@ _s_: substitute, _expr_: stringa da cercare, _new_: stringa da sostituire
 >`n`: silent mode, senza emettere output  
 >`w [file1]`: in caso di sostituzione la linea corrente viene accodata in file1  
 
------
-
 #### SCRIPT
+
 programma interpretato dalla shell scritto in comandi UNIX  
 
 `set -x`  
