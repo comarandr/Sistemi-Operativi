@@ -14,25 +14,30 @@ logout
 uscire dalla shell: `$ exit`  
 pulire lo schermo: `$ clear`  
 
+##### HISTORY 
+
 Come vedere lista comandi: `$ history`  &rarr; [num. evento] [evento = comando]  
 rieseguire ultimo comando: `$ !!`  
 eseguire un comando con numero evento: `$ !num.evento`  
-ricercare un evento: `$ ![evento]`   &rarr; es `$ !ls` cerca nella history list tutti i ls  
+ricercare stringa a inizio comando: `$ ![evento]`   &rarr; es `$ !ls` cerca nella history ultimo `ls`  
+ricercare stringa in un punto qualsiasi: `$ !?[stringa]?` &rarr; `$ !?ls?` cerca `ls` in tutto il comando
 
 ricerca di un evento e sostituzione argomenti  
 `$ ![evento]:s/[stringa1]/[stringa2]/`   `$ [evento] [stringa1]` &rarr; `$ [evento] [stringa2]`  
 
-creare un alias: `$ alias nome_alias=comando_alias`  
+creare un alias: `$ alias nome_alias='[comando_alias]'`  
 rimuovere alias: `$ unalias nome_alias`  
 
-###### METACARATTERI  
+sostituzione eventi: `:s` `/` `[stringa da cercare]` `/` `[nuova stringa]`
+
+##### METACARATTERI  
 
 \* : stringa di 0 o più caratteri  
  ? : singolo carattere  
- [] : singolo carattere tra quelli elencati  
+ [] : singolo carattere tra quelli elencati (valgono intervalli es. a-zA-Z)  
  {} : sequenza di stringe  
- \> : redirezione output  
- \>> : redirezione output append  
+ \> : redirezione output (sovrascrive)
+ \>> : redirezione output append  (non sovrascrive)
  < : redirezione input (input non da tastiera)  
  << : redirezione input dalla linea di comando  
  2> : redirezione messaggi errore  
@@ -44,11 +49,16 @@ rimuovere alias: `$ unalias nome_alias`
  (...) : raggruppamento comandi  
  ! : ripetizione comadni memorizzati history list  
 
-###### QUOTING  
+##### QUOTING  
 
  \ : inibisce il metacarattere successivo  
  ' ': inibisce metacaratteri racchiusi  
  "  ": inibisce alcuni metacaratteri  
+
+##### CARATTERI SPECIALI
+\\n: newline
+\\t: tab
+
 
 #### FILE E DIRECTORY  
 
@@ -72,6 +82,7 @@ visualizzare elenco file:
 >`-S`:in ordine di dimensione decrescente  
 >`-r`:in ordine inverso  
 >`-R`:sottocartelle  
+>`-d`:lista le cartelle in sé, non le sottocartelle
 
 visualizzare elenco file per estensione: `$ ls [arg] *.estensione ` 
 
@@ -108,32 +119,51 @@ attraversa ricorsivamente le directory in [pathnames] applicando le regole [expr
 expression può essere: *opzione*, *condizione*, *azione*
 
 esempi:  
-`$ find . -name '*.c' -print`  
-`$ find . -name '*.bak' -ls -exec rm {} \;`  
+`$ find . -name '*.c' -print` , ricerca ricorsivamente a partire dalla directory corrente tutti i file .c e li stampa
+`$ find . -name '*.bak' -ls -exec rm {} \;`  cerca ricorsivamente .bak li stampa con attibuti (-ls) e li cancella
 `$ find /etc -type d -print`  
 
-contare elementi di un file:  
->`$ wc` [argomento] [file]
+###### file system in breve
 
->*opzioni:*
->`-c` : numero di byte
->`-m` : numero di caratteri
->`-l` : numero di linee (line)
->`-w` : numero di parole (word)
-> [default] : linee, parole, byte
+L'informazione è memorizzata in *dischi fissi* suddiviso in una o più *partizioni*, ognuna delle quali può contenere un file system con una propria *top level directory*. In UNIX abbiamo un'unica struttura gerarchica.  
+Le opzioni sui filesystem da montare al boot sono in `/etc/fstab`. ,mentre il comando per montare è `mount <file speciale><mount point>`. Solo root può usarlo, `mount` senza argomenti indica i filesystem in uso nel sistema.
+
+Controllo della quantità di spazio: `df`
+Controllo quantità di spazio: `du [cartella]`, con argomento `-s` per vedere soltanto il totale
 
 #### PROCESSI E JOB
 
+stampare informazioni riguardo user che sono loggati correntemente:`$ who [opzioni]`
+
 vedere i processi dell'utente associati al terminale corrente:  
-`$ps  [argomenti]`  
+`$ ps  [argomenti]`  
 
 > *argomenti*:
 >`-a`: tutti i processi di un terminale  
 >`-f`: full listing  
 >`-e`: anche processi non associati a un terminale  
 >`-l`: long listing  
+>`-U`: 
+>`--no-header` : stampa senza l'header
 
-... (spiegare visualizzazione PID - ps)  
+|F|S|UID|PID|PPID|C|PRI|N|ADDR|SZ|WCHAN|TTY|TIME|CMD|
+|--|--|--|--|--|--|--|--|--|--|--|--|--|--|
+|8 | S | 0 | 1 | 0 | 0 | 41 | 20 | ? | 100 | ? | ? | 0:03 | init |
+|8|S|140|12999|12997|0|56|20|?|278|?|pts/12|0:00|tcsh|
+
+F: flag obsoleti
+S: stato del processo (T=stopped, R=ready, S=sleep )
+UID: utente
+PID: identificativo processo
+PPID:
+C:
+PRI: priorità
+NI: nice value 
+ADDR: indirizzo in memoria
+SZ: memopria virtuale utilizzata
+WCHAN: evento su cui il processo è sleeping
+TTY: terminale
+
 terminare un processo: `$ kill PID_processo`  
 processo sigkill: `$ kill -s kill PID_processo`  
 aprire un processo in background: `$[comando] &`  
@@ -147,23 +177,44 @@ blocchi memoria occupati da una cartella: `$ du [cartella]`
 
 #### VISUALIZZAZIONE
 
-visualizzare un file  
+##### visualizzare un file  
+
 `$ cat [f1]` → visualizzo l'intero file  
 `$ more [f1]` → scorro il testo  
 `$ tail [-n] [f1]` → ultime n righe [default n = 10]  
 `$ head [-n] [f1]` → prime n righe [default n = 10]  
 
-`$ echo`  
+`$ echo` : ripete il segnale in input. Opzioni `-n` se non si vuole andare a capo, `-e` per abilitare backslash  
+`$ read` : legge una linea dallo standard input e la divide in campi, oppure da un file tramite `-u file`
+`$ basename`: restituisce il nome di un file senza il path
 
-###### INODE E LINK  
+##### INODE E LINK  
+
 creazione hardlink: `$ln [file1] [link1]`  
 creazione link simbolico `ln -s [file1] [link1]`
 Posso creare link simbolici che puntano a link, creando catene fino a un massimo di 6 link simbolici.
 
 #### FILTRO
 
-numero di linee,parole,caratteri di un file: `$wc [argomenti] [file]`  
-contenuto di file senza linee adiacenti ripetute: `$uniq [file]`  
+###### numero di linee,parole,caratteri di un file:  
+
+>`$ wc [opzioni] [file]`  
+
+>*opzioni:*
+>`-c` : numero di byte
+>`-m` : numero di caratteri
+>`-l` : numero di linee (line)
+>`-w` : numero di parole (word)
+> [default] : linee, parole, byte
+
+###### segnalare o cancellare linee ripetute in un file
+
+> `$ uniq [file]` 
+
+>*opzioni:*
+>`-c` : precede ogni riga con un conteggio delle ripetizioni adiacenti
+>`-d` : visualizza righe ripetute
+>`-u` : visualizza righe non ripetute
 
 ###### restituire linee di un input che contengono un determinato pattern:  
 
@@ -181,19 +232,52 @@ contenuto di file senza linee adiacenti ripetute: `$uniq [file]`
 >`-w`: linee che contengono il pattern come parola completa  
 >`-x`: linee che coincidono perfettamente con il pattern  
 
+esempi:
+
+
+METACARATTERI DELLE ESPRESSIONI REGOLARI  
+
+Due tipi di sequenze di caratteri:
+
+- B (basic) utilizzabili sia in `grep` che in `egrep`  
+- E (extended) utilizzabili solo in `egrep` oppure in `grep (-e)`  
+
+tipo B:  
+^ : inizio della linea  
+\$: fine della linea  
+\\<: inizio di una parola  
+\\>: fine di una parola  
+. : singolo carattere (qualsiasi)
+[str] : un qualunque carattere in str
+[^str] : un qualunque carattere non in str
+[a-z] : un qualunque carattere tra a e z
+\ : inibisce carattere successivo
+\* : zero o più ripetizioni dell'elemento precedente  
+
+tipo E:  
+\+ : una o più ripetizioni dell'elemento precedente  
+? : zero o una ripetizioni dell'elemento precedente
+{j,k} : un numero di ripetizioni compreso tra j e k dell'elemento precedente  
+s|t : l'elemento s oppre l'elemento t
+(exp) : raggruppamento di exp come singolo elemento
+
+
 ###### ordinare linee input:  
+
 `$ sort` (default: alfabetico)  
+prende in input delle linee di testo, le ordina secondo le opzioni e le invia in output  
 >*opzioni*:  
 >`-b` ignora spazi chiavi di ordinamento  
 >`-f` ignora distinzione maiuscole/minuscole  
 >`-n` considera numerica la chiave di ordinamento  
 >`-r` ordina in modo decrescente  
->`-o` [f1] invia output al file f1  
->`-t` [s] usa s come separatore di campo  
->`-k` [s1,s2] usa i campi da s1 a s2 come chiavi di ordinamento, i successivi in caso di pareggio  
+>`-o [f1]` invia output al file f1  
+>`-t [s]` usa s come separatore di campo  
+>`-k s1,s2` usa i campi da s1 a s2 come chiavi di ordinamento, i successivi in caso di pareggio  
 >`-s` rende stabile il confronto, senza passare ai successivi in caso di pareggio  
 
 ###### conversione di carattere: 
+
 >`$ tr` (soltanto standard I/O, necessità di pipe/ridirezioni in caso contrario)
 
 > `$ tr` _[stringa1]_ _[stringa2]_  &rarr; i caratteri in stringa1 vengono sostituiti con caratteri corrispondenti in stringa2  
@@ -204,17 +288,26 @@ contenuto di file senza linee adiacenti ripetute: `$uniq [file]`
 >`-d` cancella caratteri  
 
 ###### estrarre colonne specifiche da linee di testo in input: 
-`$ cut`
+
+`$ cut `
 
 >*opzioni:*  
->`-d` separatore  
->`-f` campo da estrarre  
+>`-d` separatore (se non specificato \<Tab>)  
+>`-f` campo da estrarre (partono da 1)
+
+es. `$ cut -d: -f2`
 
 ###### combinare due righe corrispondenti di due file: 
+
 `$ paste f1 f2` (delimitatore default : \<tab>)  
 
 ###### editare testo passato da un comando all'altro in una pipeline:  
+
 `$ sed [actions] [files]`  nota: può prendere in input anche file  
+il comportamento standard è stampare in standard output le linee in input  
+salvo specifiche di indirizzo applica l'azione a tutte le linee in input
+gli indirizzi di linea possono essere specificati come numeri o espressioni regolari.
+
 
 >opzioni:  
 >`-e` in caso di più azioni, precede le azioni  
@@ -223,7 +316,7 @@ contenuto di file senza linee adiacenti ripetute: `$uniq [file]`
 sostituzione testo con sed:  
 >`$ sed s/[expr]/[new]/[flags]`  
 
-_s_: substitute, _expr_: stringa da cercare, _new_: stringa da sostituire  
+*s*: substitute, *expr*: stringa da cercare, *new*: stringa da sostituire  
 >flag possibili:  
 >`num` tra `1` e `9` (quale occorrenza di expr sostituita, default `1` = prima)  
 >`g`: ogni occorrenza sostituita  
@@ -233,16 +326,16 @@ _s_: substitute, _expr_: stringa da cercare, _new_: stringa da sostituire
 
 #### SCRIPT
 
-programma interpretato dalla shell scritto in comandi UNIX  
+programma interpretato dalla shell scritto in comandi UNIX. Viene eseguito in una sottoshell della shell corrente.   
 
-`set -x`  
-`set -v`  
+`set -x` : visualizza i comandi nel momento in cui li esegue
+`set -v` : visualizza i comandi nel momento in cui li legge
 `set -`  : annulla gli effetti di set -x, set -v  
 
 assegnamento: `variabile=valore` (nota, = senza spazi è assegnazione)  
 accesso a una variabile `$variabile`  
-
-rendere globale variabile (variabile d'ambiente): `export`  
+le variabili sono locali alla shell o allo script in cui sono definite
+promuovere a variabile globale (_variabile d'ambiente_): `export`  
 
 >variabili d'ambiente:  
 >`PS1`: prompt primario  
@@ -252,21 +345,23 @@ rendere globale variabile (variabile d'ambiente): `export`
 >`PATH`: lista di pathname in cui la shell cerca i comandi  
 >`HOME`: pathname assoluto della home directory  
 
-variabili speciali (parametro): `$1,$2,...,$9` associate al primo, ... , nono parametro passato su linea di comando  
+variabili speciali (parametro): `$1,$2,...,$9` associate al primo, ... , nono parametro _passati su linea di comando_  
 
-aumentare numero parametri con shift a sx: `shift`  
+aumentare numero parametri con shift a sx: `shift [n]`  
 
 variabili di stato automatiche, gestiscono lo stato  
-exit status `$?`: valore in uscita dell'ultino comando (0 successo, errore altrimenti)  
-~ assegnabile con `exit n`  
 
-PID shell corrente: `$$` (usato per genere nomi di file temporanei che siano unici)  
-PID ultimo comando background: `$!`  
-opzioni shell corrente: `$-`  
-numero parametri forniti allo script su linea di comando: `$#`  
-lista tutti i parametri passati allo script su linea di comando: `$*`,`$@`  
+variabili di stato:
+\$? : exit status ultimo comando (0 successo, errore altrimenti)  
+\$\$ : PID shell corrente (uso: nomi file temporanei unici tra utenti e shell diverse)  
+\$! : PID ultimo comando in background  
+\$- : opzioni della shell corrente  
+\$# : numero parametri forniti allo script su linea di comando
+\$* : lista dei parametri passati allo script su linea di comando  
+\$@ : lista dei parametri passati allo script su linea di comando
 
-###### CONTROLLO DI FLUSSO  
+
+###### CONTROLLO DI FLUSSO
 
 COSTRUTTO IF
 
@@ -277,35 +372,43 @@ COSTRUTTO IF
         false_commands  
     fi  
 
-###### in caso non sia valutabile l'exit status:  
+###### in caso non sia valutabile l'exit status
 
 >`test [expression]` (se vera exit = 0, altrimenti 1 )  
 
-+ espressioni che controllano attributi di un file f  
+- espressioni che controllano attributi di un file f  
+
 >`-e [f]`: 0 se f esiste  
 >`-f [f]`: 0 se f esiste ed è un file ordinario  
 >`-d [f]`: 0 se f esiste ed è una dir  
 >`-r [f]`: 0 se f esiste ed è leggibile  
 >`-w [f]`: 0 se f esiste ed è scrivibile  
 >`-x [f]`: 0 se f esiste ed è eseguibile  
-+ espressioni su *stringhe*  
+
+- espressioni su *stringhe*  
+
 >`-z str`: 0 se str è lunga 0  
 >`-n str`: 0 se str non è lunga 0  
 >`str1 = str2`: 0 se str1 è uguale a str2 (nota = con spazi è confronto)  
 >`str1 != str2`: 0 se str1 è diversa da str2  
 
-+ espressioni su *valori numerici*:  
+- espressioni su *valori numerici*:  
+
 >`num1 -eq num2`: 0 se uguali  
 >`num1 -ne num2`: 0 se diversi  
 >`num1 -lt num2`: 0 se num1 < num2  
 >`num1 -gt num2`: 0 se num1 > num2  
 >`num1 -le num2`: 0 se num1 <= num2  
->`num1 -ge num2`: 0 se num1 >= num2  
-+ *espressioni composte*:  
+>`num1 -ge num2`: 0 se num1 >= num2 
+
+- *espressioni composte*:  
+
 >`exp1 -a exp2`: 0 se entrambe vedere (and)  
 >`exp1 -o exp2`: 0 se è vera exp1 o exp2 (or)  
 >`! exp`: 0 se exp non è vera  
 >`( exp )`: per cambiare ordine valutazione degli operatori (è necessario quoting)  
+
+costruzioni numeri complesse: `$[espressione]` Nota: le quadre vanno messe  
 
 CICLO WHILE (finché vero continuo)  
 
@@ -314,6 +417,7 @@ CICLO WHILE (finché vero continuo)
         commands  
     done  
 
+finché la condition_command è vera vengono eseguiti i comandi  
 
 CICLO UNTIL (finché falso continuo)  
 
@@ -321,6 +425,7 @@ CICLO UNTIL (finché falso continuo)
         do  
             commands  
         done  
+finché la condition_command è falsa vengono eseguiti i comandi  
 
 CICLO FOR  
 
@@ -353,3 +458,4 @@ esempio :
     > vardata=`date`  
     > echo $vardata  
     Tue Nov 19 17:51:28 2002  
+
