@@ -1,15 +1,19 @@
-PROGRAMMI BASE IN C
+### PROGRAMMI BASE IN C
 
+```c
 #include <stdio.h>
 
 int main() {
     printf("hello, world!\n");
     return 0; // non obbligatorio
 }
+```
 
--COSTRUTTO if
-(si aspetta espressione controllo tipo intero, 0 è falso)
+###### Costrutto if
 
+si aspetta espressione controllo tipo intero, 0 è falso
+
+```c
 int main() {
     int x = 0;
 
@@ -19,9 +23,11 @@ int main() {
         printf("x è vero\n");
     return 0;
 }
+```
 
--COSTRUTTO WHILE
+- COSTRUTTO WHILE
 
+```c
 int main() {
     float fahr = 0;
     printf("Tabella Fahrenheit-Celsius:\n");
@@ -32,9 +38,11 @@ int main() {
     }
     return 0;
 }
+```
 
--USO DELLE COSTANTI
+- USO DELLE COSTANTI
 
+```c
 #define LOWER 0
 #define UPPER 300
 #define STEP 20
@@ -44,11 +52,13 @@ int main() {
         printf("%3.0f °F -> %6.1f °C\n", fahr, (5.0 / 9.0) * (fahr - 32));
     return 0;
 }
+```
 
--I/O CARATTERI, VERSIONE SEMPLIFICATA DEL cat
+- I/O CARATTERI, VERSIONE SEMPLIFICATA DEL cat
 
--CICLO WHILE
+con ciclo while
 
+```c
 int main() {
     int c = getchar();
 
@@ -58,18 +68,24 @@ int main() {
     }
     return 0;
 }
+```
 
--CICLO FOR
+con ciclo for
 
+```c
 int main() {
     for (int c = getchar(); c != EOF; c = getchar()) {
         putchar(c);
     }
     return 0;
 }
+```
 
--COMANDO UNIX wc -c
+- COMANDO UNIX wc -c
 
+con ciclo while
+
+```c
 int main() {
     long nc = 0;
 
@@ -79,7 +95,11 @@ int main() {
     printf("%ld\n", nc);
     return 0;
 }
+```
 
+con ciclo for
+
+```c
 int main() {
     long nc = 0;
 
@@ -88,9 +108,11 @@ int main() {
     printf("%ld\n", nc);
     return 0;
 }
+```
 
--COMANDO UNIX wc -l
+- COMANDO UNIX wc -l
 
+```c
 int main() {
     long nc = 0;
 
@@ -101,10 +123,13 @@ int main() {
     printf("%ld\n", nc);
     return 0;
 }
+```
 
--DICHIARAZIONE E DEFINIZIONE FUNZIONE
+- DICHIARAZIONE E DEFINIZIONE FUNZIONE  
+
 tipo_ritornato nome_funzione(lista_parametri);
 
+```c
 int factorial(int n);
 
 int factorial(int n) {
@@ -113,9 +138,11 @@ int factorial(int n) {
     else
         return n * factorial(n - 1);
 }
+```
 
--ESEMPIO FUNZIONE POWER
+- ESEMPIO FUNZIONE POWER
 
+```c
 int power(int, int); // dichiarazione della funzione power
 
 int main() {
@@ -131,9 +158,11 @@ int power(int m, int n) {
         p = p * m;
     return p;
 }
+```
 
 -FAKE SWAP (PASSAGGIO PER VALORE)
 
+```c
 void fake_swap(int x, int y) {
     int temp = x;
     x = y;
@@ -146,9 +175,11 @@ int main() {
     printf("x = %d, y = %d\n", x, y);
     return 0;
 }
+```
 
--MEDIA PESATA ARRAY
+- MEDIA PESATA ARRAY
 
+```c
 #define N_ESAMI 12
 
 int main() {
@@ -166,9 +197,11 @@ int main() {
     printf("La mia media pesata è: %2.2f\n", media);
     return 0;
 }
+```
 
--TABELLA VALORI SIN
+- TABELLA VALORI SIN
 
+```c
 #include <math.h>
 
 #define N_CAMPIONI 10
@@ -187,9 +220,11 @@ int main() {
 
     return 0;
 }
+```
 
-CASO DI ERRORE INDICE
+- CASO DI ERRORE INDICE
 
+```c
 int main() {
     int risposta = 42;
     int valori[10] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
@@ -202,11 +237,13 @@ int main() {
     printf("La risposta è: %d\n", risposta);
     return 0;
 }
+```
 
--------------- PUNTATORI ----------------------------
+- PUNTATORI
 
-SWAP
+- SWAP
 
+```c
 void swap(int *x, int *y) {
     int temp = *x;
     *x = *y;
@@ -221,9 +258,11 @@ int main() {
 
     return 0;
 }
+```
 
--SCANF
+- SCANF
 
+```c
 int main() {
     int x = 0;
 
@@ -233,9 +272,11 @@ int main() {
     printf("Il doppio di %d è %d\n", x, x * 2);
     return 0;
 }
+```
 
--ESEMPIO
+- ESEMPIO
 
+```c
 #define SIZE 10
 
 int main() {
@@ -254,35 +295,38 @@ int main() {
     }
     return 0;
 }
+```
 
-ESEMPIO 2
+- ESEMPIO 2
 
+```c
 #define SIZE 10
 
-void fill(int *, int, int,);
+void fill(int *, int, int);
 
 int main(){
     int array[SIZE] = {}, val = 0;
 
-    printf("inserisci un valore: ")
+    printf("inserisci un valore: ");
     scanf("%d",&val);
     for(int i = 0; i < SIZE; ++i)
-        printf("array[%d] = %d\n, i, array[i]);
+        printf("array[%d] = %d\n", i, array[i]);
 
-        return 0;
+    return 0;
 }
 
 void fill(int *begin, int size, int value){
     for(int *p = begin; p < begin + size; ++p)
-        *p = value
+        *p = value;
 }
+```
 
+- FUNZIONI SSCANF, SPRINTF, SNPRINTF
 
-FUNZIONI SSCANF, SPRINTF, SNPRINTF
+- USO DI MALLOC
 
-USO DI MALLOC
-
-#include <stlin.h>
+```c
+#include <stdlib.h>
 
 int somma(int *array, int size){
     int s=0;
@@ -293,7 +337,7 @@ int somma(int *array, int size){
 int main(){
     int n = 0;
 
-    printf("Uanti numeri verranno inseriti?");
+    printf("Quanti numeri verranno inseriti?");
     scanf("%d",&n);
     if(n == 0) 
         return 0;
@@ -301,24 +345,34 @@ int main(){
     int *elementi = malloc(n * sizeof(int));
 
     printf("Inserire i numeri: ");
-    for(int i = 0; i < n; ++i) scanf("%d", elemeneti + i);
+    for(int i = 0; i < n; ++i) scanf("%d", elementi + i);
     printf("La somma dei numeri inseriti è : %d\n", somma(elementi, n));
     return 0;
 }
+```
 
-CREAZIONE DINAMICA DI DUE STRINGHE
+- CREAZIONE DINAMICA DI DUE STRINGHE
 
-char *concat(char *str1, *str2){
+```c
+#include <string.h>
+#include <stdlib.h>
+
+char *concat(char *str1, char *str2){
     int len = strlen(str1) + strlen(str2);
-    char *result = malloc (len + 1);
+    char *result = malloc(len + 1);
 
     strcpy(result, str1);
     strcat(result, str2);
 
     return result;
 }
+```
 
-LETTURA DI UN NUMERO ARBITRARIO DI VALORI
+- LETTURA DI UN NUMERO ARBITRARIO DI VALORI
+
+```c
+#include <stdlib.h>
+#include <stdio.h>
 
 void reverse(int *array, int size);
 
@@ -330,18 +384,22 @@ int main(){
     while (scanf("%d", &array[read]) == 1) {
         if(++read == size){
             size *= 2; 
-            array = realloc (array, size*sizeof(int));
+            array = realloc(array, size * sizeof(int));
         }
     }
-    reverse (array, read);
+    reverse(array, read);
     for(int i = 0; i < read; ++i){
         printf("%d\n", array[i]);
     }
     free(array);
     return 0;
 }
+```
 
-IMPLEMENTAZIONE CALLOC
+- IMPLEMENTAZIONE CALLOC
+
+```c
+#include <stdlib.h>
 
 void *calloc(unsigned count, unsigned size){
     unsigned len = count * size;
@@ -351,34 +409,43 @@ void *calloc(unsigned count, unsigned size){
     }
     return mem;
 }
+```
 
-DICHIARAZIONE STRUTTURA
+- DICHIARAZIONE STRUTTURA
 
+```c
 struct point{
     float x;
     float y;
-}
+};
+```
 
+- LISTA CONCATENATA
 
-LISTA CONCATENATA
+- STRUTTURA NODO
 
-STRUTTURA NODO
+```c
 struct node{
     int data;
     struct node *next;
 };
+```
 
-NUOVO NODO
+- NUOVO NODO
+
+```c
 struct node *create(int data){
-    struct node *ptr = malloc (sizeof(struct node));
+    struct node *ptr = malloc(sizeof(struct node));
     ptr->data = data;
     ptr->next = NULL;
 
     return ptr;
 }
+```
 
-LUNGHEZZA
+- LUNGHEZZA
 
+```c
 int length(struct node *head){
     int len = 0;
     for (struct node *n = head; n; n = n->next){
@@ -386,36 +453,42 @@ int length(struct node *head){
     }
     return len;
 }
+```
 
-RICERCA ELEMENTO
+- RICERCA ELEMENTO
 
+```c
 struct node *find(struct node *head, int data){
     for(struct node *n = head; n; n = n->next){
         if(n->data == data)
-        return n;
+            return n;
     }
     return NULL;
 }
+```
 
-CONCATENAZIONE DUE LISTE
+- CONCATENAZIONE DUE LISTE
 
+```c
 struct node *last(struct node *head){
     for(struct node *n = head; n; n = n->next){
         if(n->next == NULL)
             return n;
-        }
-    return null;
     }
+    return NULL;
+}
 
-struct node *append(struct node *head1; struct node *head2){
-    struct node *last1= last(head1);
+struct node *append(struct node *head1, struct node *head2){
+    struct node *last1 = last(head1);
     last1->next = head2;
 
     return head1;
 }
+```
 
-ELIMINAZIONE LISTA
+- ELIMINAZIONE LISTA
 
+```c
 void destroy(struct node *head){
     struct node *next = head;
 
@@ -425,41 +498,48 @@ void destroy(struct node *head){
         free(n);
     }
 }
+```
 
-UTILIZZO DEI FILE HEADER:
+- UTILIZZO DEI FILE HEADER:
 
-- add.head
+- add.h
+
+```c
 int add(int x, int y);
+```
 
-- add.c 
+- add.c
+
+```c
 #include "add.h"
+
 int add(int x, int y){
     return x + y;
 }
+```
 
-- main.c 
-#include<stdio.h>
+- main.c
+
+```c
+#include <stdio.h>
 #include "add.h"
 
 int main(){
-    printf("3+4 = "%d\n", add(3,4));
+    printf("3+4 = %d\n", add(3,4));
     return 0;
 }
+```
 
-NOTA: doppie dichiarazioni portano ad errori, quindi uso procedura #ifndef
-(...)
+- ESEMPIO ACCESSO AI FILE:
 
-
-
-ESEMPIO ACCESSO AI FILE:
-#include<stdio.h>
+```c
+#include <stdio.h>
 
 int main(int argc, char **argv){
-    if(arcg < 2){
+    if(argc < 2){
         fprintf(stderr, "fornire nome file\n");
         return 1;
     }
-
 
     char *filename = argv[1];
 
@@ -479,17 +559,19 @@ int main(int argc, char **argv){
         return 3;
     }
 
-    printf("Somma dei numeri contenuti: %s\n", sum);
+    printf("Somma dei numeri contenuti: %d\n", sum);
     return 0;
+}
+```
 
-}   
+- GESTIONE DEGLI ERRORI
 
-GESTIONE DEGLI errori
-#include<stdio.h>
-#include<string.h>
-#include<errno.h>
+```c
+#include <stdio.h>
+#include <string.h>
+#include <errno.h>
 
-int main (int arcg, char **argv){
+int main(int argc, char **argv){
     if(argc < 2){
         fprintf(stderr, "specificare il nome di un file\n");
         return 1;
@@ -497,25 +579,26 @@ int main (int arcg, char **argv){
 
     FILE *file = fopen(argv[1], "r");
     if (file == NULL){
-        fprintf(stderr, %s: Impossibile aprire %s: %s\n", 
+        fprintf(stderr, "%s: Impossibile aprire %s: %s\n", 
             argv[0], argv[1], strerror(errno));
         return 2;
     }
     return 0;
 }
+```
 
-CONOSCERE A PRIORI A LUNGHEZZA DI UN FILE:
+- CONOSCERE A PRIORI LA LUNGHEZZA DI UN FILE:
 
-#include<stdio.h>
-#include<errno.h>
-#include<string.h>
+```c
+#include <stdio.h>
+#include <errno.h>
+#include <string.h>
 
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv){
     char *filename = argv[1];
     FILE *file = fopen(filename, "r");
     if(!file){
-        fpritnf(stderr, %s:Impossibile aprire il file %s: %s",
+        fprintf(stderr, "%s: Impossibile aprire il file %s: %s\n",
             argv[0], filename, strerror(errno));
         return 2;
     }
@@ -527,13 +610,16 @@ int main(int argc, char **argv)
     fclose(file);
     return 0;
 }
+```
 
-APRIRE UN FILE
-#include<unistd.h>
-#include<fcntl.h>
+- APRIRE UN FILE
+
+```c
+#include <unistd.h>
+#include <fcntl.h>
 
 int main(int argc, char **argv){
-    inf fd = open(argv[1], O_WRONLY | O_APPEND | O_CREAT, 0644);
+    int fd = open(argv[1], O_WRONLY | O_APPEND | O_CREAT, 0644);
 
     char contents[13] = "Hello World\n";
 
@@ -541,52 +627,58 @@ int main(int argc, char **argv){
     close(fd);
     return 0;
 }
+```
 
-USO DI STAT 
+- USO DI STAT
+
 (...)
 
-ESEMPIO DI UTILIZZO DI FORK
+- ESEMPIO DI UTILIZZO DI FORK
 
-#include<stdio.h>
-#include<unistd.h>
+```c
+#include <stdio.h>
+#include <unistd.h>
 
 int main(){
     printf("Un solo processo con PID %d.\n", (int)getpid());
     printf("Chiamata a fork...\n");
 
-    pidT pid=fork();
+    pid_t pid = fork();
 
     if(pid == 0)
-        printf("Sono il processo figlio (PIF: %d).\n", (int)getpid());
+        printf("Sono il processo figlio (PID: %d).\n", (int)getpid());
     else if (pid > 0)
-        printf("Sono il genitore del processo con PID %d.\n",pid):
+        printf("Sono il genitore del processo con PID %d.\n", pid);
     else
-        fprintf(stderr;
-            "Si è verificato un errore nella chiamata a fork.\n");
+        fprintf(stderr, "Si è verificato un errore nella chiamata a fork.\n");
     
     return 0;
 }
+```
 
-ESEMPIO DI FUNZIONE EXECL()
+- ESEMPIO DI FUNZIONE EXECL()
 
-#include<stdio.h>
-#include<stdlib.h>
-#include<unistd.h>
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 int main(){
     printf("Esecuzione di ls...\n");
 
     execl("/bin/ls", "ls", "-l", NULL);
 
-    pererror("La chiamata di execl ha generato un errore");
+    perror("La chiamata di execl ha generato un errore");
     return 1;
 }
+```
 
+- UTILIZZO COMBINATO DI FORK E EXECL
 
-UTILIZZO COMBINATO DI FORK E EXECL
+```c
 #include <stdio.h>
 #include <unistd.h>
-#include >sys/wait.h>
+#include <sys/wait.h>
 
 int main(){
     pid_t pid = fork();
@@ -607,8 +699,11 @@ int main(){
             return 0;
     }
 }
+```
 
-ESEMPIO AMBIENTE DI UN PROCESSO:
+- ESEMPIO AMBIENTE DI UN PROCESSO:
+
+```c
 #include <stdio.h>
 
 int main(int argc, char **argv, char **envp){
@@ -618,15 +713,18 @@ int main(int argc, char **argv, char **envp){
     }
     return 0;
 }
+```
 
-ESEMPIO USO DI GETENV()
-#include<stdio.h>
-#include<stdlib.h>
+- ESEMPIO USO DI GETENV()
 
-int main(int argc, char **argvm char **envp){
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(int argc, char **argv, char **envp){
     if(argc <= 1){
         while(*envp){
-            printf("%s\n,*envp);
+            printf("%s\n", *envp);
             ++envp;
         }
     } else {
@@ -634,37 +732,44 @@ int main(int argc, char **argvm char **envp){
     }
     return 0;
 }
+```
 
-ESEMPIO USO DI EXECVE()
-#include<stdio.h>
-#include<unistd.h>
+- ESEMPIO USO DI EXECVE()
+
+```c
+#include <stdio.h>
+#include <unistd.h>
 
 int main(){
     char *argv[2] = {"env2", NULL};
-    char *envp[3] = {"var1=valore1", "var2=valore2", NULL}
+    char *envp[3] = {"var1=valore1", "var2=valore2", NULL};
 
     execve("./env2", argv, envp);
-    pererror("execve fallita");
+    perror("execve fallita");
 
     return 1;
 }
+```
 
-ESEMPIO USER ID E GROUP ID
+- ESEMPIO USER ID E GROUP ID
 
-#include<stdio.h>
-#include<unistd.h>
+```c
+#include <stdio.h>
+#include <unistd.h>
 
 int main(){
     uid_t uid = getuid();
-    gid_t gid = getid();
+    gid_t gid = getgid();
 
     printf("UID=%d, GID=%d\n", uid, gid);
     return 0;
 }
+```
 
-CREAZIONE DI UNA PIPE
+- CREAZIONE DI UNA PIPE
 
-#inlcude <stdio.h>
+```c
+#include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <sys/wait.h>
@@ -674,7 +779,7 @@ CREAZIONE DI UNA PIPE
 int main(){
     int pipes[2] = { };
     if (pipe(pipes) == -1){
-        pererror ("pipe call");
+        perror("pipe call");
         return 1;
     }
 
@@ -682,11 +787,11 @@ int main(){
     pid_t pid = fork();
     switch (pid){
         case -1:
-            pererror("fork call");
+            perror("fork call");
             return 2;
         case 0:
             close(pipes[0]);
-            write(pipes[1], "Hello, world!", MSGSIZE );
+            write(pipes[1], "Hello, world!", MSGSIZE);
             break;
         default:
             close(pipes[1]);
@@ -696,16 +801,18 @@ int main(){
     }
     return 0;
 }
+```
 
+- COMANDO KILL
 
-COMANDO KILL
+```c
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
 #include <signal.h>
 
-int main (int argc, char **argv){
+int main(int argc, char **argv){
     if (argc < 2){
         fprintf(stderr, "specificare il PID di un processo\n");
         return 1;
@@ -718,14 +825,16 @@ int main (int argc, char **argv){
     }
 
     if(kill(pid, SIGKILL) == -1){
-        fprintf(stderr, "impossibile uccidere il processo %d: %s\n", pid, sterror(errno));
+        fprintf(stderr, "impossibile uccidere il processo %d: %s\n", pid, strerror(errno));
         return 2;
     }
     return 0;
 }
+```
 
+- ESEMPIO DI SIGNAL HANDLING
 
-ESEMPIO DI SIGNAL HANDLING
+```c
 #include <stdio.h>
 #include <unistd.h>
 #include <signal.h>
@@ -745,11 +854,13 @@ int main(){
     }
     return 0;
 }
+```
 
-UTILIZZO DEI SOCKET CON FUNZIONI BIND() E LISTEN()
+- UTILIZZO DEI SOCKET CON FUNZIONI BIND() E LISTEN()
 
-#include<sys/tyoes.h>
-#include<sys/socket.h>
+```c
+#include <sys/types.h>
+#include <sys/socket.h>
 
 struct sockaddr_un{
     short sa_family;
@@ -758,8 +869,11 @@ struct sockaddr_un{
 
 int bind(int sockfd, const struct sockaddr *addr, size_t addr_len);
 int listen(int sockfd, int queue_size);
+```
 
-ESEMPIO 
+- ESEMPIO
+
+```c
 #include <stdio.h>
 #include <pthread.h>
 
@@ -771,8 +885,8 @@ int main(){
 
     pthread_t thread1, thread2;
 
-    pthread_create(&thread1, NULL, print_msg, (void *)msg1 );
-    pthread_create(&thread2, NULL, print_msg, (void *)msg2 );
+    pthread_create(&thread1, NULL, print_msg, (void *)msg1);
+    pthread_create(&thread2, NULL, print_msg, (void *)msg2);
 
     pthread_join(thread1, NULL);
     pthread_join(thread2, NULL);
@@ -787,12 +901,14 @@ void *print_msg(void *ptr){
     
     return NULL;
 }
+```
 
-ESEMPIO DI SINCRONIZZAZIONE DELL'ACCESSO A UN CONTATORE
+- ESEMPIO DI SINCRONIZZAZIONE DELL'ACCESSO A UN CONTATORE
 
-#include<stdio.h>
-#include<unistd.h>
-#include<pthread.h>
+```c
+#include <stdio.h>
+#include <unistd.h>
+#include <pthread.h>
 
 int n = 0;
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
@@ -804,7 +920,7 @@ int main(){
     pthread_create(&th1, NULL, count, NULL);
     pthread_create(&th2, NULL, count, NULL);
 
-    pthread_create(th1, NULL);
+    pthread_join(th1, NULL);
     pthread_join(th2, NULL);
 
     printf("n: %d\n", n);
@@ -813,29 +929,14 @@ int main(){
 
 void *count(void *arg){
     int local_n = 0;
-    do{
-        usleep(500000);
-        pthread_create(&th1, NULL, count, NULL);
-        pthread_create(&th2, NULL, count, NULL);
-
-        pthread_join(th1, NULL);
-        pthread_join(th2, NULL);
-
-        printf("n: %d\n", NULL);
-        return 0;
-    }
-}
-
-void *count(void *arg){
-    int local_n = 0;
     do {
         usleep(50000);
-        pthread_mutex_lock (&mutex);
-        n =+ 1;
+        pthread_mutex_lock(&mutex);
+        n += 1;
         local_n = n;
         pthread_mutex_unlock(&mutex);
         printf("n: %d\n", local_n);
     } while (local_n < 42);
     return NULL;
 }
-
+```

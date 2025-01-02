@@ -163,7 +163,7 @@ Shell scripting
         1620
 ```
 
-```
+```sh
     $ cat >data
     set-x
     echo the date today is:

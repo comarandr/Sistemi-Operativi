@@ -1,17 +1,19 @@
-C Sheet
+## C Sheet
 
---------- COMPILAZIONE UNIX -----------------
-$ clang programma.c (crea eseguibile a.out)
-$ ./a.out (esegue eseguibile a.out)
+### compilazione unix
+
+\$ clang programma.c (crea eseguibile a.out)
+\$ ./a.out (esegue eseguibile a.out)
 
 oppure
 
-$clang nomeprogramma.c -o altronome (rinomica file output)
+\$clang nomeprogramma.c -o altronome (rinomica file output)
 
--------- SEQUENZE DI ESCAPE-----------
+### sequenze di escape
+
 \n (newline - a capo), \t (tab), \\ (singola \), \" (doppio apice)
 -------- PREPROCESSING -----------------------
-# direttive del preprocessore
+#: direttive del preprocessore
 #include <stdio.h> : standard input/output
 #include < fileHeader.h >: file con procedure, variabili, ecc 
 
@@ -40,7 +42,7 @@ dichiarazione variabile: tipo nomeVariabile = valore;
 int main(): { ... return 0; }  procedura che viene eseguita alla compilazione 
 
 printf("stringa"); printf("Stringadiformato", argomenti)
-"stringa di formato" -> %[formato][tipo]    es: %3.0f (3 cifre intere, 0 decimali, f = float)
+"stringa di formato" -> %\[formato][tipo]    es: %3.0f (3 cifre intere, 0 decimali, f = float)
 %d, %c, %s 
 
 scanf(): legge valori dallo standard input
@@ -59,7 +61,7 @@ deferenziazione: *puntatore (accesso alla variabile puntata dal puntatore)
 
 puntatore array: *pa = &a[0] , int *p = nome_array
 
-nota: *p + i, = puntatore avanza di i posizioni rispetto array, i*sizeof(tipo) locazioni
+nota: \*p + i, = puntatore avanza di i posizioni rispetto array, i*sizeof(tipo) locazioni
 
 ----- caratteri ----------
 int getchar(); 
@@ -80,9 +82,9 @@ matrix[n][m] = {{a11, a12, a13}, {a21,a22,a23}{a31,a32,a33}}
 matrix[i][j] = x;
 
 ------- ALLLOCAZIONE DINAMICA -------------------
-void *malloc (unisigned n); 
+void *malloc (unisigned n);  
 
-void * generico puntatore, n signed 
+void * generico puntatore, n signed  
 
 free(puntatore); : libera memoria
 void *realloc (void *puntatore, unisgned new_size);
