@@ -18,7 +18,9 @@ int main() {
   }
 
   
-
+  printf("Numero di spazi: %d\n",spazi);
+  printf("Numero di tab: %d\n",tab);
+  printf("Numero di newline: %d\n",newline);
   return 0;
 }
 

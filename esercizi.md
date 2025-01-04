@@ -1,5 +1,7 @@
 ### PROGRAMMI BASE IN C
 
+#### lezione 7 - slide
+
 ```c
 #include <stdio.h>
 
@@ -9,7 +11,7 @@ int main() {
 }
 ```
 
-###### Costrutto if
+- COSTRUTTO IF
 
 si aspetta espressione controllo tipo intero, 0 è falso
 
@@ -81,7 +83,7 @@ int main() {
 }
 ```
 
-- COMANDO UNIX wc -c
+- COMANDO UNIX wc -c (conta i byte)
 
 con ciclo while
 
@@ -110,7 +112,7 @@ int main() {
 }
 ```
 
-- COMANDO UNIX wc -l
+- COMANDO UNIX wc -l (conta le linee)
 
 ```c
 int main() {
@@ -124,6 +126,101 @@ int main() {
     return 0;
 }
 ```
+
+#### lezione 7 - esercizi
+
+1) Scrivere un programma C che stampi il valore della costante simbolica EOF
+
+```c
+#include <stdio.h>
+int main(){
+    int e = EOF;
+    printf("EOF = %d\n", e);
+    return 0;
+}
+```
+
+2) scrivere un programma C che conti il numero di spazi, tab e newline (whitespace characters) rappresenti nei caratteri immessi sullo standard input
+
+```c
+#include <stdio.h>
+int main() {
+  int tab = 0, spazi = 0, newline = 0;
+  for(int c = getchar(); c != EOF; c = getchar()) {
+    switch(c) {
+      case ' ':
+        spazi++;
+        break;
+      case '\t':
+        tab++;
+        break;
+      case '\n':
+        newline++;
+        break;
+    }
+  }
+  printf("Numero di spazi: %d, numero di tab: %d, numero di newline: %d",spazi,tab,newline);
+  return 0;
+}
+```
+
+3) scrivere un programma che stampi un istogramma orizzontale (con '-') raffigurante le lunghezze delle parole (delimitate da whitespace characters) immesse sullo standard input (parola per parola)
+
+```c
+#include <stdio.h>
+
+int main() {
+  int i = 0, n = 0; // i è un indice, n è un contatore. n conta i caratteri, resettandosi a ogni spazio, tab o a capo
+
+  for(int c = getchar(); c != EOF; c = getchar()) //per ogni carattere fino EOF
+  {
+    if(c != ' ' && c != '\t' && c != '\n') { // se il carattere non è uno spazio, un tab o un a capo
+      n++; // incremento il contatore 
+    } else { // altrimenti
+
+      for(i = 0; i < n; i++) // stampo tanti trattini fino a quanto è arrivato n
+        printf("-"); 
+
+      if(n > 0) // se n è maggiore di 0, ovvero ho contato uno spazio, un tab o un a capo
+        printf("\n"); // vado a capo
+
+      n = 0; // resetto il contatore
+    } //dopo aver resettato conterò ancora una volta, se è EOF il ciclo terminerà
+  }
+  return 0;
+}
+```
+
+3) scrivere un programma che conti il numero di parole sullo standard input
+
+```c
+#include <stdio.h>
+//Scrivere un programma C che conti il numero di parole immesse sullo standard input
+int main() {
+  int n = 0, inizio_parola = 0; //
+
+  for(int c = getchar(); c != EOF; c = getchar()) { //ciclo che si interrmpe con EOF
+
+    if(c ==' ' || c == '\t' || c == '\n') //se c'è uno spazio
+    {
+      if(inizio_parola) { //se inizio_parola è 1
+        n++; //incrementa n
+        inizio_parola=0; //e metti inizio_parola a 0
+      }
+    } else
+      inizio_parola=1; //altrimenti metti inizio_parola a 1
+  } //fine for
+
+  if(inizio_parola) //se inizio_parola è 1
+    n++; //incrementa n
+
+  printf("Numero di parole: %d\n",n);
+  return 0;
+}
+
+```
+
+#### lezione 8 - slide
 
 - DICHIARAZIONE E DEFINIZIONE FUNZIONE  
 
@@ -239,6 +336,22 @@ int main() {
 }
 ```
 
+#### lezione 8 - esercizi
+
+1) ripetere esercizio 2 o 3 della lezione 7, definendo una funzione is_whitespace() per controllare se un carattere è uno spazio bianco oppure no (nota: non esiste il tipo bool)
+
+```c
+
+```
+
+2) definire una funzione int lg(int n) che trovi il massimo numero m tale che 10^m sia minore o uguale a n (parte intera di logaritmo in base 10 di n)
+
+```c
+
+```
+
+#### lezione 9 - slide
+
 - PUNTATORI
 
 - SWAP
@@ -319,6 +432,160 @@ void fill(int *begin, int size, int value){
     for(int *p = begin; p < begin + size; ++p)
         *p = value;
 }
+```
+
+#### lezione 9 - esercizi
+
+#### lezione 10 - slide
+
+- ARRAY DI CARATTERI (STRINGHE)
+
+con scorrimento indicizzato
+
+```c
+#include<stdio.h>
+
+int main(){
+    char msg[] = "Ciao";
+    printf("Stringa: \"%s\"\n", msg);
+    printf("Caratteri: ");
+    for(int i = 0; msg[i]; i++){
+        printf("'%c' ", msg[i]);
+    }
+    putchar('\n');
+    return 0;
+}
+```
+
+con scorrimento a puntatori
+
+```c
+#include<stdio.h>
+
+int main(){
+    char msg[] = "Ciao";
+    printf("Stringa: \"%s\"\n", msg);
+    printf("Caratteri: ");
+    for(char *p = msg; *p; p++){
+        printf("'%c' ", *p);
+    }
+    putchar('\n');
+    return 0;
+}
+```
+
+- POSSIBILE IMPLEMENTAZIONE DI STRLEN
+
+```c    
+int strlen(const char *s){
+    int n = 0;
+    for(char *p = s; *p; p++){
+        n++;
+    }
+    return n;
+}
+```
+
+- UTILIZZO DI STRNCMP()
+
+```c
+#include <stdio.h>
+#include <string.h>
+#define MAXINPUT 100
+
+int main() {
+    char input[MAXINPUT] = "";
+    do {
+        printf("Password: ");
+        scanf("%99s", input);
+    } while (strncmp(input, "passw0rd", MAXINPUT) != 0);
+    printf("Il segreto è: 42\n");
+    return 0;
+}
+```
+
+- POSSIBILE IMPLEMENTAZIONE DI STRNCMP()
+
+```c
+char *strncpy(char *dest, char *source, unsigned len){
+int i = 0;
+while(i<len && source[i]){
+    dest[i] = source[i];
+    i++;
+}
+if (i < len){ // se la stringa source è più corta di len, aggiunge terminatore
+    dest[i] = 0;
+}
+return dest;
+}
+```
+
+- POSSIBILE IMPLEMENTAZIONE DI STRNCAT()
+
+```c
+char *strncat(char *dest, char *source, unsigned len){
+    int destlen = strlen(dest);
+    strncpy(dest + destlen, source, len);
+    return dest;
+}
+```
+
+- ESEMPIO DI USO DI STRNCPY() E STRNCAT()
+
+```c
+#include <stdio.h>
+#include <string.h>
+
+#define MAXLEN 20
+
+int main(){
+    char msg[MAXLEN] = "";
+    char msg1[MAXLEN] = "Ciao,";
+    char msg2[MAXLEN] = "mondo!";
+
+    strncpy(msg, msg1, MAXLEN);
+    strncat(msg, msg2, MAXLEN - strlen(msg)-1);
+    printf("%s\n", msg);
+    return 0;
+}
+```
+
+- CODICE ERRATO
+
+```c
+#include <stdio.h>
+#include <string.h>
+
+int main(){
+    char *ciao = "Ciao mondo !";
+    strncpy(ciao, "Hello world!", 11);
+    printf("%s\n", ciao);
+    return 0;
+}
+```
+
+- ESEMPIO DI ARGOMENTI DA RIGA DI COMANDO
+
+```c
+#include <stdio.h>
+#include <string.h>
+
+int main(int argc, char **argv){
+    int somma = 0;
+    if(argc >=2 && strcmp(argv[1], "-s") == 0){
+        somma = 1;
+    }
+    int x = 0, y = 0;
+    printf("Inserisci due numeri: ");
+    int n = scanf("%d %d", &x, &y);
+    if(somma){
+        printf("%d + %d = %d\n", x, y, x + y);
+    } else {
+        printf("%d * %d = %d\n", x, y, x * y);
+    }
+    return 0;
+}
+
 ```
 
 - FUNZIONI SSCANF, SPRINTF, SNPRINTF

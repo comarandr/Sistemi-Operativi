@@ -90,3 +90,282 @@ free(puntatore); : libera memoria
 void *realloc (void *puntatore, unisgned new_size);
 void *calloc (unisigned count, unsigned size);
 
+
+
+GitHub Copilot Suggestions
+10 Suggestions
+Suggestion 1
+- commenti: `//` `/* */`
+- dichiarazione di variabili: `tipo nome_variabile = valore;`
+- assegnamento: `nome_variabile = valore;`
+- chiamata di funzione: `nome_funzione(parametri);`
+- definizione di funzione: `tipo_ritornato nome_funzione(lista_parametri){blocco di codice; return valore;}`
+
+blocco di codice: sequenza di istruzioni racchiuse tra parentesi graffe `{}`
+
+#### concetti base
+
+- dichiarazione costanti: `#define NOME valore`
+- dichiarazione librerie: `#include <libreria.h>`
+
+Accept suggestion 1
+Suggestion 2
+- commenti: `//` `/* */`
+- direttive di preprocessamento: `#define`, `#include`
+
+Accept suggestion 2
+Suggestion 3
+- commenti: `//`, `/* */`
+- definizione costanti: `#define NOME valore`
+- inclusione librerie: `#include <nome.h>`
+- dichiarazione variabili: `tipo nome;`
+- inizializzazione variabili: `tipo nome = valore;`
+- definizione costanti
+- definizione funzioni
+- chiamata funzioni: `nome_funzione(valore);`
+- return: `return valore;`
+
+#### sintassi avanzata
+
+- dichiarazione costanti: `const tipo nome = valore;`
+- definizione di strutture: `struct nome_struttura{tipo nome;};`
+- definizione di array: `tipo nome[dim];`
+- puntatori: `tipo *nome;`
+- allocazione dinamica: `tipo *nome = malloc(sizeof(tipo));`
+- deallocazione dinamica: `free(nome);`
+- definizione di stringhe: `char nome[dim];`
+- puntatori a funzione: `tipo (*nome)(lista_parametri);`
+- definizione di macro: `#define NOME valore`
+- definizione di typedef: `typedef tipo nome;`
+- definizione di enum: `enum nome{valore1, valore2, ...};`
+
+#### costrutti di controllo
+
+- if: `if(condizione){blocco di codice}`
+- if else: `if(condizione){blocco di codice} else{blocco di codice}`
+- for: `for(dichiarazione e inizio indice; condizione fine; passo){blocco di codice}`
+- while: `while(condizione){blocco di codice}`
+- do while: `do{blocco di codice}while(condizione);`
+- switch: `switch(espressione){case valore: blocco di codice; break; default: blocco di codice;}`
+
+#### operatori
+
+- aritmetici: `+`, `-`, `*`, `/`, `%`, `++`, `--`
+- assegnamento: `=`, `+=`, `-=`, `*=`, `/=`, `%=`
+- logici: `&&` (and), `||` (or), `!` (not)
+- di confronto: `<`, `>`, `<=`, `>=`, `==`, `
+
+Accept suggestion 3
+Suggestion 4
+- commenti: `//` o `/* ... */`
+- dichiarazione di variabili: `tipo nome = valore;`
+- assegnazione: `variabile = valore;`
+- dichiarazione costante: `#define NOME valore`
+- dichiarazione funzione: `tipo nome_funzione(lista_parametri){...}`
+- dichiarazione di tipo: `typedef tipo nome;`
+- costrutti di controllo e cicli (if,for,while, switch)
+- operatori aritmetici: +, -, *, /, %, ++, --
+- operatori di confronto: < > <= >= == != 
+- operatori logici: && (and), || (or), ! (not)
+- costanti
+
+#### struttura del programma
+
+```c
+#include <stdio.h>
+
+int main(){
+    blocco di codice
+    return 0;
+}
+```
+
+#### funzioni
+
+Le funzioni vengono prima dichiarate e poi definite tramite l'implementazione
+
+- dichiarazione: "intestazione", tipo nome(argomenti)
+- implementazione: corpo
+
+dichiarazione deve precedere la chiamata, se 
+
+#### variabili e passaggio per valore
+
+Accept suggestion 4
+Suggestion 5
+- commenti: `//` o `/* */`
+- dichiarazione di variabili: `tipo nome_variabile = valore;`
+- assegnazione: `nome_variabile = valore;`
+- chiamata a funzione: `nome_funzione(parametri);`
+- dichiarazione costanti: `#define NOME valore`
+- dichiarazione libreria: `#include <stdio.h>`
+- dichiarazione stringa: `char nome[] = "stringa";`
+- definizione di funzione: `tipo nome_funzione(lista_parametri){blocco di codice}`
+- definizione di costante: `#define NOME valore`
+- dichiarazione di tipo: `typedef tipo nome;`
+- dichiarazione di struttura: `struct nome_struttura{campi};`
+- definizione di struttura: `struct nome_struttura nome_istanza;`
+- definizione di struttura con typedef: `typedef struct nome_struttura{campi} nome;`
+- definizione di array: `tipo nome_array[dimesione];`
+- definizione di puntatore: `tipo *nome_puntatore;`
+- definizione di puntatore a struttura: `struct nome_struttura *nome_puntatore;`
+- definizione di array di puntatori: `tipo *nome_array[dimesione];`
+- definizione di puntatore a array: `tipo (*nome_puntatore)[dimensione];`
+- definizione di puntatore a funzione: `tipo (*nome_puntatore)(lista_parametri);`
+- definizione di puntatore a funzione con typedef: `typedef tipo (*nome_puntatore)(lista_parametri);`
+- definizione di array di puntatori a funzione: `tipo (*nome_array[dimesione])(lista_parametri);`
+- definizione di array di puntatori a funzione con typedef: `typedef tipo (*nome_array[dimesione])(lista_parametri);`
+- definizione di puntatore a puntatore: `tipo **nome_puntatore;`
+- definizione di puntatore a puntatore a struttura: `struct nome_struttura **nome_puntatore;`
+- definizione di array di puntatori a puntatore: `tipo **nome_array[dimesione];`
+- definizione di puntatore a array di puntatori
+
+Accept suggestion 5
+Suggestion 6
+- dichiarazione di variabili: `tipo nome;`
+- assegnamento: `nome = valore;`
+- inizializzazione: `tipo nome = valore;`
+- dichiarazione e inizializzazione: `tipo nome = valore;`
+- dichiarazione di array: `tipo nome[dim];`
+- accesso a elemento array: `nome[indice];`
+- dichiarazione di stringa: `char nome[] = "stringa";`
+- accesso a carattere stringa: `nome[indice];`
+- dichiarazione di puntatore: `tipo *nome;`
+- accesso a valore puntato: `*nome;`
+- accesso a indirizzo variabile: `&nome;`
+- dichiarazione di costante: `#define NOME valore`
+- dichiarazione di costante con tipo: `const tipo NOME = valore;`
+
+- dichiarazione di funzione: `tipo nome(lista_parametri){blocco}`
+
+#### sintassi avanzata
+
+- passaggio per riferimento: `funzione(&variabile);`
+- passaggio per valore: `funzione(variabile);`
+- puntatori a funzione: `tipo (*nome)(lista_parametri);`
+- allocazione dinamica di memoria: `malloc(sizeof(tipo));`
+- deallocazione di memoria: `free(puntatore);`
+- array dinamici: `tipo *nome = (tipo *) malloc(dim * sizeof(tipo));`
+- stringhe dinamiche: `char *nome = (char *) malloc(dim * sizeof(char));`
+- puntatori a puntatori: `tipo **nome;`
+
+#### sintassi avanzata
+
+- passaggio per riferimento: `funzione(&variabile);`
+- passaggio per valore: `funzione(variabile);`
+- puntatori a funzione: `tipo (*nome)(lista_parametri);`
+- allocazione dinamica di memoria: `malloc(sizeof(tipo));`
+- deallocazione di memoria: `free(puntatore);`
+- array dinamici: `tipo *nome = (tipo *) malloc(dim * sizeof(tipo));`
+- stringhe dinamiche: `char *nome = (char *) malloc(dim * sizeof(char));`
+- puntatori a puntatori: `tipo **nome;`
+
+#### sintassi base
+
+Accept suggestion 6
+Suggestion 7
+- commenti: `//` per commenti in linea, `/* */` per commenti multilinea
+- dichiarazione di variabili: `tipo nome;`
+- inizializzazione di variabili: `tipo nome = valore;`
+- assegnamento di variabili: `nome = valore;`
+- dichiarazione costanti: `const tipo nome = valore;`
+- dichiarazione array: `tipo nome[dim];`
+- inizializzazione array: `tipo nome[dim] = {valori};`
+- accesso a elementi array: `nome[i]`
+- dichiarazione stringhe: `char nome[dim];`
+- inizializzazione stringhe: `char nome[dim] = "stringa";`
+- accesso a elementi stringhe: `nome[i]`
+- dichiarazione puntatori: `tipo *nome;`
+- inizializzazione puntatori: `tipo *nome = &valore;`
+- dereferenziamento puntatori: `*nome`
+- accesso a elementi puntati: `(*nome).elemento`
+- accesso a elementi puntati (alternativa): `nome->elemento`
+- dichiarazione array di puntatori: `tipo *nome[dim];`
+- accesso a elementi array di puntatori: `nome[i]->elemento`
+- dichiarazione stringhe tramite puntatori: `char *nome = "stringa";`
+- accesso a elementi stringhe tramite puntatori: `nome[i]`
+- dichiarazione struttura: `struct nome {tipo elemento;};`
+- dichiarazione variabile struttura: `struct nome variabile;`
+- accesso a elementi struttura: `variabile.elemento`
+- dichiarazione puntatore a struttura: `struct nome *puntatore;`
+- inizializzazione puntatore a struttura: `struct nome *puntatore = &variabile;`
+- dereferenziamento puntatore a struttura: `(*puntatore).elemento`
+- accesso a elementi puntati struttura (alternativa): `puntatore->elemento`
+- dichiarazione array di strutture: `struct nome nome[dim];`
+- accesso a elementi array di strutture: `nome[i].elemento`
+
+Accept suggestion 7
+Suggestion 8
+- dichiarazione di libreria: `#include <nome.h>` o `#include "nome.h"`
+- definizione di costanti: `#define NOME valore`
+- definizione di funzioni: `tipo_ritornato nome_funzione(lista_parametri){blocco di codice}`
+- definizione di variabili: `tipo nome_variabile;`
+- inizializzazione di variabili: `tipo nome_variabile = valore;`
+- assegnamento di variabili: `nome_variabile = valore;`
+- dichiarazione e inizializzazione di variabili: `tipo nome_variabile = valore;`
+- dichiarazione di puntatori: `tipo *nome_puntatore;`
+- assegnamento di puntatori: `nome_puntatore = &nome_variabile;`
+- dereferenziazione di puntatori: `*nome_puntatore`
+- accesso a campi di una struct: `nome_struct.campo`
+- operatore di indirizzamento: `&nome_variabile`
+- operatore di accesso a campi di un array: `nome_array[i]`
+- accesso a campi di un puntatore: `nome_puntatore->campo`
+- accesso a campi di un puntatore: `(*nome_puntatore).campo`
+- dichiarazione di struct: `struct nome_struct{tipo campo1; tipo campo2; ...};`
+- dichiarazione di array: `tipo nome_array[dim];`
+- dichiarazione di stringhe: `char nome_stringa[dim];`
+- dichiarazione di array di stringhe: `char nome_array[dim][dim];`
+- dichiarazione di costanti: `#define NOME valore`
+- dichiarazione di costanti: `const tipo nome_costante = valore;`
+- dichiarazione di costanti: `enum{NOME1, NOME2, ...};`
+- dichiarazione di costanti: `enum{NOME1=val1, NOME2=val2, ...};`
+- dichiarazione di costanti: `enum nome_enum{NOME1, NOME2, ...};`
+- dichiarazione di costanti: `enum nome_enum{NOME1=val1, NOME2=val2, ...};`
+- dichiarazione di
+
+Accept suggestion 8
+Suggestion 9
+- commenti: `//` o `/* */`
+- dichiarazione di variabili: `tipo nome_variabile;`
+- assegnamento: `nome_variabile = valore;`
+- input/output: `printf("stringa", variabili);`, `scanf("formato", &variabili);`
+- costanti: `const tipo nome = valore;`
+- array: `tipo nome_array[dim1][dim2];`
+- puntatori: `tipo *nome_puntatore;`, `&var` restituisce l'indirizzo di var
+- stringhe: `char nome_stringa[] = "stringa";`
+- struct: `struct nome_struct {tipo nome_variabile;};`
+- union: `union nome_union {tipo nome_variabile;};`
+- typedef: `typedef tipo nome_tipo;`
+- enum: `enum nome_enum {valore1, valore2, ...};`
+- typedef enum {valore1, valore2, ...} nome_enum;`
+
+#### operatori
+
+- aritmetici: `+`, `-`, `*`, `/`, `%`, `++`, `--`
+- relazionali: `<`, `>`, `<=`, `>=`, `==`, `!=`
+- logici: `&&`, `||`, `!`
+- bitwise: `&`, `|`, `^`, `<<`, `>>`, `~`
+- assegnamento: `=`, `+=`, `-=`, `*=`, `/=`, `%=`, `<<=`, `>>=`, `&=`, `|=`, `^=`
+- condizionale: `condizione ? espressione1 : espressione2`
+- virgola: `,`
+
+#### costrutti di controllo e cicli
+
+- if: `if(condizione) {istruzioni} else {istruzioni}`
+- switch: `switch(variabile) {case valore: istruzioni; break;}`
+- for: `for(inizializzazione; condizione; incremento) {istruzioni}`
+- while: `while(condizione) {istruzioni}`
+- do-while: `do {istruzioni} while(condizione);`
+- break, continue
+
+#### funzioni
+
+- dichiarazione: `tipo nome_funzione(parametri);`
+
+Accept suggestion 9
+Suggestion 10
+- commenti: `//` o `/* */`
+- dichiarazione di variabili: `tipo nome_variabile;`
+- inizializzazione: `tipo nome_variabile = valore;`
+- dichiarazione costante: `#define NOME valore`
+- dichiarazione e inizializzazione: `tipo nome_variabile = valore;`

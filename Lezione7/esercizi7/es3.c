@@ -4,7 +4,7 @@
 int main(){
     int c = getchar();
     while(c != EOF){
-        if(c == ' ' || c == '\n'){ //risolto aggiungendo un or
+        if(c == ' ' || c == '\n' || c == '\t'){ //risolto aggiungendo un or
             printf("\n");
             c = getchar();
         }
