@@ -311,7 +311,7 @@ Esempio di command substitution
     $ echo $basefile
     man
 
-Esempio di scripting: script lisfiles che data una directory($1) e la dimensione($2) in byte restituisce tutti i file della directory più piccoli. Con controllo parametri
+Esempio di scripting: script lisfiles che data una directory(\$1) e la dimensione(\$2) in byte restituisce tutti i file della directory più piccoli. Con controllo parametri
 
     if test $# -ne 2
     then

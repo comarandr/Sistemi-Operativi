@@ -26,7 +26,7 @@ void bubble(int *begin, int size)
 #define SIZE 11
 
 int main() {
-  int array[SIZE] = { };
+  int array[SIZE] = {};
   int read = 0;
   int n = 0;
 

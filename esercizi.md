@@ -338,10 +338,31 @@ int main() {
 
 #### lezione 8 - esercizi
 
-1) ripetere esercizio 2 o 3 della lezione 7, definendo una funzione is_whitespace() per controllare se un carattere è uno spazio bianco oppure no (nota: non esiste il tipo bool)
+1) ripetere esercizio 2 o 3 della lezione 7, definendo una funzione is_whitespace() per controllare se un carattere è uno spazio bianco oppure no (nota: non esiste il tipo bool()
 
 ```c
+#include <stdio.h>
 
+int is_whitespace(char);
+
+int main() {
+  int i = 0, n = 0;
+  for(int c = getchar(); c != EOF; c = getchar()){
+    if(!is_whitespace(c)) {
+      n++;
+    } else {
+      for(i = 0; i < n; i++){
+        printf("-");
+      }
+      if(n > 0){
+        printf("\n");
+      }
+      n = 0;
+    }}
+  return 0;
+}
+
+int is_whitespace(char c) { return c == ' ' || c == '\t' || c == '\n'; }
 ```
 
 2) definire una funzione int lg(int n) che trovi il massimo numero m tale che 10^m sia minore o uguale a n (parte intera di logaritmo in base 10 di n)
@@ -435,6 +456,33 @@ void fill(int *begin, int size, int value){
 ```
 
 #### lezione 9 - esercizi
+
+1) scriviere un programma che legga dallo standard input dei numeri e ne stampi la somma totale
+
+```c
+#include <stdio.h>
+
+int main()
+{
+  int n = 0, sum = 0;
+
+  while(scanf("%d", &n) == 1) {
+    sum += n;
+  }
+
+  printf("%d\n", sum);
+
+  return 0;
+}
+```
+
+2) scrivere una funzione reverse() che inverta l'ordine degli elementi in un array
+
+```c
+
+```
+
+3) 
 
 #### lezione 10 - slide
 
@@ -588,9 +636,11 @@ int main(int argc, char **argv){
 
 ```
 
-- FUNZIONI SSCANF, SPRINTF, SNPRINTF
+#### lezione 10 - esercizi
 
-- USO DI MALLOC
+#### lezione 11 - slide
+
+- ESEMPIO DI USO DI MALLOC
 
 ```c
 #include <stdlib.h>
@@ -1207,3 +1257,6 @@ void *count(void *arg){
     return NULL;
 }
 ```
+
+#### Cose utili
+
