@@ -382,4 +382,118 @@ snprintf: `snprintf(stringa, dimensione, "formato", var1, var2, ...)` ulteriore 
 malloc: `void *malloc(unsigned n);` serve ad allocare n byte contigui, void * è un puntatore di qualsiasi tipo
 free: `free(puntatore-malloc);` serve a liberare la memoria allocata con malloc (buona norma usarlo sempre)
 realloc: `void *realloc(void *ptr, unsigned new_size);` funzione ritorna un nuovo puntatore
-calloc: `void *calloc(unsigned count, unsigned size);` alloca della memoria azzerandola precedentemente
+calloc: `void *calloc(unsigned count, unsigned size);` alloca della memoria azzerandola precedentemente  
+
+fopen(): `FILE *fopen(char *name, char *mode);` restituisce il puntatore del file su cui operare. \*mode può essere: "r", "w", "a", "rb", "wb"
+fclose(): `int fclose(FILE *fp);` chiude il file pointer (buona norma utilizzarlo sempre)
+
+fprintf(): `int fprintf(FILE *fp, char *format, ...);` analogo a printf()  
+fscanf(): `int fscanf(FILE *fp, char *format, ...);` analogo a scanf()  
+fgetc():`int fgetc(FILE *fp);` analogo a getchar()
+fputc():`int fputc(int c, FILE *fp);` analogo a putchar()
+
+feof(): `int feof(FILE *fp);` restituisce vero (n > 0) se lettura è arrivata alla fine
+ferror(): `int ferror(FILE *fp);` restituisce vero (n > 0)
+
+sterror(): `*char strerror(errno);` ritorna stringa di descrizione corrispondente al valore di errno, cioè al tipo di errore
+pererror():
+
+fseek(): `int fseek(FILE *fp, long offset, int whence);` imposta la posizione attuale a _offset_ byte da posizione _whence_ che può essere: SEEK_SET (inizio file), SEEK_CUR (posizione corrente), SEEK_END (fine file)
+ftell(): `int ftell(FILE *file);` restituisce posizione attuale
+
+open()
+creat()
+close()
+read()
+write()
+lseek()
+unlink()
+fcntl()
+chmod()
+
+
+### PROGRAMMAZIONE DI SISTEMA
+
+Un processo interagisce con sistema operativo tramite chiamate di sistema. Al programmatore sono fornite funzioni, di tipo:
+
+- ISO C
+- POSIX
+
+#### accesso ai file
+
+prima di leggere/scrivere bisogna _aprire_ un file:
+
+```c
+FILE *fopen(char *name, char *mode);
+```
+
+\*name = nome del file, *mode = stringa modalità "r" (reading), "w" (writing), "a" (append)  
+
+ottenuto il puntatore di tipo FILE\*, possiamo usarlo per operare sul file con fprintf(),fscanf(),fgetc(),fputc()...
+
+per _chiudere_ un file:
+
+```c
+int fclose(FILE *fp);
+```
+
+NOTA: esistono tre file pointer standard già aperti e pronti all'uso:
+
+- `stdout`: standard output &rarr; _printf("str")_ equivale a _fprintf(stdout, "str")_
+- `stdin`: standard input  &rarr; _scanf(\*char, "formato", ...)_ equivale a _fscanf(stdin, "formato", ...)_
+- `stderr`: standard error  
+
+#### gestione degli errori
+
+tramite feof() e ferror() distinguo i casi in cui c'è un errore in lettura rispetto al caso in cui il file è terminato.
+Per distinguere quale errore, le funzioni impostano la variabile globale errno, in errno.h si trovano le costanti corrispondenti ai possibili errori riportati dalle funzioni stnadard (EACCES E EISDIR)  
+
+tramite la funzione strerror() posso ottenere una stringa di descrizione dell'errore
+
+```c
+fprintf(stderr," descrizione errore:%s\n", strerror(errno));
+```
+
+anche la funzione pererror() agisce analogamente
+
+#### posizionamento in lettura/scrittura
+
+lettura e scrittura avvengono in modo sequenziale (inizio &rarr; fine)  
+
+```c
+int fseek( FILE *file, long offset, int whence)
+```
+
+es. `fseek(file, 0, SEEK_SET)`; fa tornare all'inizio del file
+
+la funzione `ftell()` restituisce posizione corrente
+
+#### input/output binario
+
+fopen(char* nome_file, "rb" ): reading binary, apre il file in lettura binaria (output)
+fopen(char *nome_file, "wb" ): writing binary, apre il file in scrittura binaria (input)
+
+per I/O binario si usano funzioni apposite:
+
+lettura:
+
+```c
+size_t fread(void *ptr, size_t size, size_t nitems, FILE *file );
+```
+
+legge size\*nitems byte dal file e scrive nella memoria puntata da ptr
+
+scrittura:
+
+```c
+size_t fwrite(void *ptr, size_t size, size_t nitems, FILE *file);
+```
+scrive sul file size\*nitems byte dalla memoria puntata da ptr
+
+### FUNZIONI POSIX
+
+- permettono di scrivere/leggere da fonti diverse: pipe,socket
+- funzioni POSIX effettuano direttamente le system call, ISO adottano un buffer interno
+- permettono di gestire permessi, link e altri attributi dei file
+
+
