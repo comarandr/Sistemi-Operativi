@@ -817,6 +817,8 @@ void destroy(struct node *head){
 }
 ```
 
+#### lezione 12 - slide
+
 - UTILIZZO DEI FILE HEADER:
 
 - add.h
@@ -949,6 +951,8 @@ int main(int argc, char **argv){
 - USO DI STAT
 
 (...)
+
+#### lezione 14 - slide
 
 - ESEMPIO DI UTILIZZO DI FORK
 
@@ -1083,6 +1087,14 @@ int main(){
 }
 ```
 
+- ESEMPIO DI IMPLEMENTAZIONE COMANDO SU
+
+```c
+g
+```
+
+#### lezione 15 - slide
+
 - CREAZIONE DI UNA PIPE
 
 ```c
@@ -1093,27 +1105,28 @@ int main(){
 
 #define MSGSIZE 14
 
-int main(){
-    int pipes[2] = { };
-    if (pipe(pipes) == -1){
+
+int main(void) {
+    int pipes[2]= { }; //array (lettura,scrittura}
+    if (pipe(pipes)==-1) { //errore nella pipe
         perror("pipe call");
         return 1;
     }
 
-    char msg[MSGSIZE] = { };
-    pid_t pid = fork();
-    switch (pid){
-        case -1:
+    char msg[MSGSIZE] = { }; //inizializzo stringa messaggio
+    pid_t pid = fork(); //duplicazione del processo, 0 se figlio
+    switch (pid) {
+        case -1: //se pid -1 errore
             perror("fork call");
             return 2;
-        case 0:
-            close(pipes[0]);
-            write(pipes[1], "Hello, world!", MSGSIZE);
-            break;
-        default:
-            close(pipes[1]);
-            read(pipes[0], msg, MSGSIZE);
-            printf("%s\n", msg);
+        case 0: //processo figlio
+            close(pipes[0]); //chiamata posix di chiusura della lettura
+            write(pipes[1], "Hello, world!", MSGSIZE); //scrive nella pipe[1]
+            break; //esce
+        default: //processo padre
+            close(pipes[1]); //chiude l'altro capo
+            read(pipes[0], msg, MSGSIZE); //legge dalla pipe[0]
+            printf("%s\n",msg); //stampa quello che legge 
             wait(NULL);
     }
     return 0;
@@ -1260,3 +1273,26 @@ void *count(void *arg){
 
 #### Cose utili
 
+```c
+#include <errno.h>
+#include <stdio.h>
+#include <string.h>
+
+int main(int argc, char **argv) {
+    if (argc<2)
+        fprintf(stdout,"aggiungere il pathname dei file");
+    else
+        for (int i = 1; i < argc; ++i) {
+            FILE *file = fopen(argv[i],"r");
+            if (!file) {
+                fprintf(stderr,"errore, impossibile aprire %s: %s", argv[i], strerror(errno));
+                return 1;
+            }
+            for (char c = fgetc(file); c != EOF; c = fgetc(file)) { //while non funziona porcodio
+                putchar(c);
+            }
+        }
+    return 0;
+}
+```
+ 

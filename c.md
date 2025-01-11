@@ -361,57 +361,6 @@ printf("%f %f\n", (*pp).x, (*pp).y);
 ```
 
 
-#### funzioni viste a lezione
-
-getchar: `getchar()` legge carattere dallo standard input
-putchar: `putchar(c)` stampa carattere nello standard output  
-
-strlen: `int strlen( *char s)` restituisce la lunghezza di una stringa
-strncmp: `int strcmp( *char s1, *char s2, unsigned len)` confronto lessicografico di due stringhe (0 uguali, -1 altrimenti)
-strcmp: `int strcmp( *char s1, *char s2)` versione meno sicura in quanto manca lunghezza  
-strncpy: `char *strncpy( *char dest, *char source, unsigned len)` copia i primi len caratteri di source in dest  
-strncat: `char *strncat( *char dest, *char source, unsigned len)` concatena i primi len caratteri di source a dest
-
-printf: `printf "stringa", %1, %2, ...` stampa stringa nello standard output, sostituendo ogni % nella stringa al corrispondente argomento  
-scanf: `scanf("formato", &var1, &var2, ...)` legge input da standard input e lo memorizza nelle variabili passate come argomento
-
-sscanf: `sscanf(stringa, "formato", &var1, &var2, ... )` legge da stringa fornita come parametro invece che da standard input  
-sprintf: `sprintf(stringa, "formato", var1, var2, ...)` stampa su una stringa invece che su standard output
-snprintf: `snprintf(stringa, dimensione, "formato", var1, var2, ...)` ulteriore argomento lunghezza massima stringa (consigliata)
-
-malloc: `void *malloc(unsigned n);` serve ad allocare n byte contigui, void * è un puntatore di qualsiasi tipo
-free: `free(puntatore-malloc);` serve a liberare la memoria allocata con malloc (buona norma usarlo sempre)
-realloc: `void *realloc(void *ptr, unsigned new_size);` funzione ritorna un nuovo puntatore
-calloc: `void *calloc(unsigned count, unsigned size);` alloca della memoria azzerandola precedentemente  
-
-fopen(): `FILE *fopen(char *name, char *mode);` restituisce il puntatore del file su cui operare. \*mode può essere: "r", "w", "a", "rb", "wb"
-fclose(): `int fclose(FILE *fp);` chiude il file pointer (buona norma utilizzarlo sempre)
-
-fprintf(): `int fprintf(FILE *fp, char *format, ...);` analogo a printf()  
-fscanf(): `int fscanf(FILE *fp, char *format, ...);` analogo a scanf()  
-fgetc():`int fgetc(FILE *fp);` analogo a getchar()
-fputc():`int fputc(int c, FILE *fp);` analogo a putchar()
-
-feof(): `int feof(FILE *fp);` restituisce vero (n > 0) se lettura è arrivata alla fine
-ferror(): `int ferror(FILE *fp);` restituisce vero (n > 0)
-
-sterror(): `*char strerror(errno);` ritorna stringa di descrizione corrispondente al valore di errno, cioè al tipo di errore
-pererror():
-
-fseek(): `int fseek(FILE *fp, long offset, int whence);` imposta la posizione attuale a _offset_ byte da posizione _whence_ che può essere: SEEK_SET (inizio file), SEEK_CUR (posizione corrente), SEEK_END (fine file)
-ftell(): `int ftell(FILE *file);` restituisce posizione attuale
-
-open()
-creat()
-close()
-read()
-write()
-lseek()
-unlink()
-fcntl()
-chmod()
-
-
 ### PROGRAMMAZIONE DI SISTEMA
 
 Un processo interagisce con sistema operativo tramite chiamate di sistema. Al programmatore sono fornite funzioni, di tipo:
@@ -492,8 +441,353 @@ scrive sul file size\*nitems byte dalla memoria puntata da ptr
 
 ### FUNZIONI POSIX
 
+#include <unistd.h>
+
 - permettono di scrivere/leggere da fonti diverse: pipe,socket
 - funzioni POSIX effettuano direttamente le system call, ISO adottano un buffer interno
 - permettono di gestire permessi, link e altri attributi dei file
 
+#### aprire un file 
+
+```c
+int open(const char *path, int openflags);
+```
+
+apre il file path nel modo specificato da openflags:
+
+- O_RDONLY: open for reading only
+- O_WRONLY: write only
+- O_RDWR: reading and writing
+- O_APPEND: append on each write
+- O_CREAT: create file if it does not exist
+- O_TRUNC: truncate size to 0
+- O_EXCL: error if O_CREAT and the file exist
+
+restituisce un file descriptor che:
+
+- rappresenta il file aperto
+- può essere associato a file ma anche a pipes, socket, ecc
+- tre file descriptor default: 
+    - standard input: (0)
+    - standard output: (1)
+    - standard error: (2)
+
+lettura e scrittura tramite read() and write() che sono analoghe alle rispettive ISO fread() e fwrite()
+
+```c
+ssize_t read(int fd, void *buffer, size_t nbytes);
+```
+
+```c
+ssize_t write(int fd, void *buffer, size_t nbytes);
+```
+
+#### chiamate stat e fstat
+
+stat() e fstat() permettono di accedere in lettura alle informazioni e proprietà di un file
+
+stat(): primo argomento pathname
+
+```c
+int stat(const char *pathname, struct stat *out);
+```
+
+fstat() opera su un descrittore di un file già aperto
+
+```c
+fstat( int filedes, struct stat *out);
+```
+
+risultato è un puntatore di una struttura struct stat:
+
+```c
+struct stat{
+...
+}
+```
+
+#### GESTIONE DEI PROCESSI
+
+<sys/types.h>
+
+processo: unità base di esecuzione di un sistema UNIX, isolato rispetto agli altri processi
+
+system call per processi:
+
+getpid(): restituisce il PID
+getppid(): restituisce il PPID
+getpgrp(): restituisce il gruppo
+
+fork(): `pif_t fork()` duplica il processo, restituisce PID con padre, 0 con figlio;
+
+exec():
+
+wait():
+
+exit():
+
+#### fork
+
+```c
+pid_t fork();
+```
+
+crea una copia del processo chiamante e restituisce il PID del figlio al genitore, 0 al figlio
+esempio importante
+
+#### system call exec
+
+famgilia di macro delle funzioni `exec()` servono a lanciare processi che eseguano programmi diversi rispetto al chiamante, sostituisce il processo attuale con esecuzione di un altro file eseguibile  
+
+```c
+int execl(const char *path, cons char *arg0, ...);
+```
+
+- `path` eseguibile che si vuole lanciare
+- `arg0, ...` sono gli argomenti da riga di comando, ultimo argomento NULL
+
+sovrascrive il programma originale con quello passato da parametro, pertanto le istruzioni successive a execl() verranno eseguite in caso di errore di esecuzione di execl() con ritorno del controllo al chiamante
+
+```c
+int main(){
+    print("ciao")
+    execl ("/bin/ls", "ls","-l", NULL; )
+}
+```
+
+si combina molto bene con fork(): fork() crea il nuovo processo ed exec() esegue un nuovo programma nel figlio
+
+#### ambiente di un processo
+
+ambiente di un processo: insieme dei valori che processo eredita dal padre:
+
+- array di puntatore a stringhe, del tipo _NOME=valore_, terminato da puntatore nullo 
+- ambiente viene passato attraverso un terzo parametro alla funzione main()
+
+l'array è presente anche nella variabile globale environ:
+```c
+extern char **environ;
+```
+
+tuttavia si preferisce operare con
+
+getenv(): recupera enviroment dato il pathname
+setenv(): `int setenv(char *name, char *value, int overwrite)`
+
+l'ambiente è un dato privato del processo
+di default coincide con quello del padre, che però può decidere arbitrariamente l'ambiente del figlio prima dell'exec() tramite:
+
+execle(): `int execle(const char *path, arg1,...,argn,NULL, const char **envp);`
+execve(): `int execve(const char *path, const char **argv, const char **envp);`
+
+`envp` ambiente desiderato
+
+#### PATH
+
+PATH: usata per individuare eseguibile corrispondente al comando, execv/execl non cercano nel path
+
+due versioni cercano invece nel path
+
+- execvp():()
+- execlp():()
+
+#### famiglia exec
+
+```c
+int execl(const char *name, ...); argomenti riga comando passati alla funzione senza enviroment
+int execv(const char *name, const char **argv); argomenti riga comando passati come array, senza enviroment
+int execlp(const char *name, ...); argomento riga comando passati alla funzione, senza enviroment, cerca nel path
+int execvp(const char *name, cons char **argv); argomento riga di comando passati come array, senza enviroment, nel path
+int execle(const char *name, ..., /* envp */); argomento riga di comando passati alla funzione, con enviroment
+int execve(const char *name, const char **argv, const char *envp); argomenti riga di comando, come array, con enviroment
+```
+
+#### current working directory e root directory
+
+current working directory: directory corrente
+root directory: directory che il processo vede come directory radice (/.)
+
+possono essere cambiate con
+
+#include<unistd.h>
+
+`int chdir (const char *path);`
+`int chroot(const char *path);` utile in rari casi
+
+#### User ID e Group ID
+
+sistema di permessi: associazione ID utente/gruppo a un processo
+
+processo con uid 0: privilegi di root
+ogni file ha proprio UID e GID e propri permessi accesso
+se UID e GID corrispondono con permessi di accesso file, processo può accedere
+
+per consocere proprio UID/GID:
+
+uid_t getuid();
+gid_t getgid();
+
+per abbassare i propri privilegi:
+
+setuid();
+setgid();
+
+ogni processo associa real UID e real GID che coincidono con quelli dell'utente che ha lanciato il processo, tuttavia esistono effective UID e effective GID (EUID/EGID) che determinano effettivamente i privilegi. Solitamente coincidono.
+
+Se bit Set UID o Set GID attivo, effective UID/GID sarà quello del proprietario del file e non quello dell'utente che lo ha lanciato
+
+#### pipe
+
+sistema di comunicazione tra due processi, in cui uno invia dati tramite `write` e l'altro legge tramite `read` (in modo FIFO)
+
+per creare una pipe
+
+\#include <unistd.h>
+
+pipe(): `int pipe(int *filedes);` filedes punta a un array a due interi (filedescriptor): 
+
+- filedes[0] legge dalla pipe
+- filedes[1] scrive nella pipe.
+
+uno dei due capi deve essere un processo figlio
+
+- file descriptor aperti dopo fork()
+- possibile redirigere un file descriptor aperto su un altro. La redirezione resta in piedi dopo execv()
+
+per redirigere
+dup2(): `int dup2(int old_fd, int new_fd);`
+
+dopo la chiamata new_fd punterà alla stessa risorsa puntata da old_fd (che doveva essere già aperto). Se new_fd già in uso, chiuso e riaperto
+
+es
+
+```c
+int fds[2]={ }; //nota: è l'array {0,0}
+pipe(fds);      //nota: fds[0] = (stdin), fds[1] = 0 (stdin)
+dup2(fds[1], 1);//nota: 
+```
+
+#### segnali
+
+#### funzioni viste a lezione
+
+getchar: `getchar()` legge carattere dallo standard input
+putchar: `putchar(c)` stampa carattere nello standard output  
+
+- **stringhe**
+
+strlen: `int strlen( *char s)` restituisce la lunghezza di una stringa
+strncmp: `int strcmp( *char s1, *char s2, unsigned len)` confronto lessicografico di due stringhe (0 uguali, -1 altrimenti)
+strcmp: `int strcmp( *char s1, *char s2)` versione meno sicura in quanto manca lunghezza  
+strncpy: `char *strncpy( *char dest, *char source, unsigned len)` copia i primi len caratteri di source in dest  
+strncat: `char *strncat( *char dest, *char source, unsigned len)` concatena i primi len caratteri di source a dest
+
+- **stampa**
+
+printf: `printf ("stringa", %1, %2, ...)` stampa stringa nello standard output, sostituendo ogni % nella stringa al corrispondente argomento  
+scanf: `scanf("formato", &var1, &var2, ...)` legge input da standard input e lo memorizza nelle variabili passate come argomento
+
+sscanf: `sscanf(stringa, "formato", &var1, &var2, ... )` legge da stringa fornita come parametro invece che da standard input  
+sprintf: `sprintf(stringa, "formato", var1, var2, ...)` stampa su una stringa invece che su standard output
+snprintf: `snprintf(stringa, dimensione, "formato", var1, var2, ...)` ulteriore argomento lunghezza massima stringa (consigliata)
+
+- **memoria dinamica**
+
+malloc: `void *malloc(unsigned n);` serve ad allocare n byte contigui, void * è un puntatore di qualsiasi tipo
+free: `free(puntatore-malloc);` serve a liberare la memoria allocata con malloc (buona norma usarlo sempre)
+realloc: `void *realloc(void *ptr, unsigned new_size);` funzione ritorna un nuovo puntatore
+calloc: `void *calloc(unsigned count, unsigned size);` alloca della memoria azzerandola precedentemente  
+
+- **chiamate ISO**
+
+`stdout`: standard output (FILE in scrittura)
+`stdin`: standard input (FILE in lettura)
+`stderr`: standard error (FILE in scrittura)
+
+fopen(): `FILE *fopen(char *name, char *mode);` restituisce il puntatore del file su cui operare. \*mode può essere: "r", "w", "a", "rb", "wb"
+fclose(): `int fclose(FILE *fp);` chiude il file pointer (buona norma utilizzarlo sempre)
+
+fprintf(): `int fprintf(FILE *fp, char *format, ...);` analogo a printf()  
+fscanf(): `int fscanf(FILE *fp, char *format, ...);` analogo a scanf()  
+fgetc():`int fgetc(FILE *fp);` analogo a getchar()
+fputc():`int fputc(int c, FILE *fp);` analogo a putchar()
+
+fread(): `size_t fread(void *ptr, size_t size, size_t nitems, FILE *file );` legge (size \* nitems) byte da file e scrive su *ptr
+fwrite(): `size_t fwrite(void *ptr, size_t size, size_t nitems, FILE *file);` scrive (size \* nitems) byte da \*ptr su file
+
+feof(): `int feof(FILE *fp);` restituisce vero (n > 0) se lettura è arrivata alla fine
+ferror(): `int ferror(FILE *fp);` restituisce vero (n > 0)
+
+sterror(): `*char strerror(errno);` ritorna stringa di descrizione corrispondente al valore di errno, cioè al tipo di errore
+pererror():`extern void perreror(const char *__s);` stampa messaggio che descrive il valore di errno 
+
+fseek(): `int fseek(FILE *fp, long offset, int whence);` imposta la posizione attuale a _offset_ byte da posizione _whence_ che può essere: SEEK_SET (inizio file), SEEK_CUR (posizione corrente), SEEK_END (fine file)
+ftell(): `int ftell(FILE *file);` restituisce posizione attuale
+
+- **CHIAMATE POSIX**  
+
+\#include <unistd.h>
+\#include <fcntl.h>
+
+0: standard input
+1: standard output
+2: standard error
+
+open(): `int open(const char *pathname, int openflags);` restituisce il file descriptor
+creat():`int creat(const char *pathname, mode_t mode);`  equivalente a open() con flag O_CREAT | O_WRONLY | O_TRUNC
+close():`int close(int fd);` chiude il file descriptor  
+read():`ssize_t read(int fd, void *buffer, size_t nbytes);`  
+write():`ssize_t write(int fd, void *buffer, size_t n)` scrive  
+lseek():`off_t lseek(int fd, off_t offset, int whence)`    
+unlink():`int`   
+fcntl():`int fcntl(int fd, int op, .../* arg */);`  
+chmod():`int`  
+
+#include <sys/types.h>
+#include <sys/stat.h>
+
+stat(): `int stat(const char *pathname, struct stat *out);`
+fstat(): `fstat( int filedes, struct stat *out);`
+
+```c
+struct stat{
+    dev_t st_dev;       // device id
+    ino_t st_ino;       // inode number
+    mode_t st_mode;     // tipo di file e permessi
+    nlink_t st_nlink;   // numero di link non simbolici
+    uid_t st_uid;       // UID
+    gid_t st_gid;       // GID
+    dev_t st_rdev;      // device type
+    off_t st_size;      // dimensione del file
+    time_t st_atime;    // tempo di ultimo accesso
+    time_t st_mtime;    // tempo di ultima modifica
+    time_t st_ctime;    // tempo di creazione
+    long st_blksize;    // dimensione del blocco
+    long st_blocks;     // numero di blocchi
+};
+```
+
+- **processi**
+
+<sys/types.h>
+
+processo: unità base di esecuzione di un sistema UNIX, isolato rispetto agli altri processi
+
+system call per processi:
+
+getpid(): restituisce il PID
+getppid(): restituisce il PPID
+getpgrp(): restituisce il gruppo
+
+fork(): `pif_t fork()` duplica il processo, restituisce PID con padre, 0 con figlio;
+
+exec():
+
+wait(): `pid_t wait(int *__stat_loc );` Wait for a child to die.  When one does, put its status in *STAT_LOC
+   and return its process ID.  For errors, return (pid_t) -1.
+
+exit():
+
+getenv(): `char getenv(const char *name);`
+setenv(): `int setenv(char *name, char *value, int overwrite);` setta una nuova variabile, overwite: 1 sovrascrive, 0 non sovrascrive  
 
