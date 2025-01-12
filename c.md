@@ -669,6 +669,106 @@ dup2(fds[1], 1);//nota:
 
 #### segnali
 
+meccanismo per inviare interrupt ai processi, possono essere gestiti tramite:
+
+- funzione (signal handling)
+- blocco del signale
+- invio a un altro processo
+
+system call principale
+
+kill():
+
+segnale può essere lanciato solo a processi dello stesso utente (salvo root)  
+si può mandare segnali a se stessi con raise() oppure alarm(secs) che causa ricezione di SIGALARM dopo intervallo di tempo in secs
+
+#### signal handling
+
+un segnale si può gestire, eseguendo una funzione ogni volta che viene ricevuto mediante:
+
+```c
+typedef void (*sighandler_t)(int); //definizione tipo puntatore a funzione
+sighandler_t signal(int sig, sighandler_t handler); 
+```
+
+signal(): registra funzione puntata da handler come gestore del segnale _sig_, versione semplificata di sigaction()
+
+#### Socket
+
+Sono un meccanismo di processo bidirezionale:
+
+- operano su file descriptor
+- filosofia client/server  
+- server ascolta un indirizzo, processi client si connettono
+- stesso modello di comunicazioni in rete
+- più domini: UNIX-domain (locale), Internet-domain (IPV4/IPV6)
+
+socket(): crea file descriptor di un capo della connessione (server e client)
+
+client
+connect(): connette un socket a un altro in ascolto
+
+server
+bind(): lega il socket a un indirizzo
+listen() marca il socket come passivo (per accettare connessioni)
+accept(): accetta connessione in arrivo
+
+funzione socket
+
+\#include <sys/socket.h>
+
+`int socket(int domani, int type, int protocol);` dominio, tipo, protocollo
+
+nel caso di dominio UNIX: 
+
+```c
+int fd = socket(AF_LOCAL, SOCK_STREAM, 0);
+```
+
+AF_LOCAL: no rete, SOCK_STREAM: affidabile, 0 protocollo scelto dal SO
+
+la funzione bind() lega un socket a un indirizzo, mentre listen() abilita l'ascolto
+
+```c
+#include <sys/types.h>
+#include <sys/socket.h>
+
+struct sockaddr_un{
+    short sa_family; 
+    char sun_path[108];
+};
+
+int bind (int  sockfd, const struct sockaddr *addr, size_t addr_len);
+int listen(int sockfd, int queue_size);
+```
+
+sockfd: file descriptor del socket
+sockaddr: indirizzo del socket, ovvero il nome di un socket file creato da bind()
+
+queue_size: numero massimo di client che possono rimanere in attesa
+
+#### accept e connect
+
+per connettersi come client su cui esista un processo in ascolto:
+
+connect: `int connect(int sockfd, const struct sockaddr *adress, size_t add_len)` 
+
+la connessione si instaura quando il server chiama accept():
+
+accept: `int accept(int sockfd, struct sockaddr *address, size_t *addr_len);` restituisce un nuovo file descriptor, il vecchio è utilizzabile per accettare un'altra connessione (solitamente forkando il processo)
+
+per comunicare, o come tutti gli altri file, oppure:
+
+send: `ssize_t sen(int fd, const void *buffer, size_t length, int flags);`
+recv: `ssend_t recv(int fd, void *bufferm, size_t length, int flags);`
+
+fd: id del socket
+*buffer: messaggio o puntatore
+length: lunghezza del buffer
+flags: 0, protocollo scelto dal sistema
+
+simili a write() e read() ma con parametro aggiuntivo flags.
+
 #### funzioni viste a lezione
 
 getchar: `getchar()` legge carattere dallo standard input
@@ -681,6 +781,7 @@ strncmp: `int strcmp( *char s1, *char s2, unsigned len)` confronto lessicografic
 strcmp: `int strcmp( *char s1, *char s2)` versione meno sicura in quanto manca lunghezza  
 strncpy: `char *strncpy( *char dest, *char source, unsigned len)` copia i primi len caratteri di source in dest  
 strncat: `char *strncat( *char dest, *char source, unsigned len)` concatena i primi len caratteri di source a dest
+strtoll:
 
 - **stampa**
 
@@ -704,25 +805,28 @@ calloc: `void *calloc(unsigned count, unsigned size);` alloca della memoria azze
 `stdin`: standard input (FILE in lettura)
 `stderr`: standard error (FILE in scrittura)
 
-fopen(): `FILE *fopen(char *name, char *mode);` restituisce il puntatore del file su cui operare. \*mode può essere: "r", "w", "a", "rb", "wb"
-fclose(): `int fclose(FILE *fp);` chiude il file pointer (buona norma utilizzarlo sempre)
+fopen: `FILE *fopen(char *name, char *mode);` restituisce il puntatore del file su cui operare. \*mode può essere: "r", "w", "a", "rb", "wb"
+fclose: `int fclose(FILE *fp);` chiude il file pointer (buona norma utilizzarlo sempre)
 
-fprintf(): `int fprintf(FILE *fp, char *format, ...);` analogo a printf()  
-fscanf(): `int fscanf(FILE *fp, char *format, ...);` analogo a scanf()  
-fgetc():`int fgetc(FILE *fp);` analogo a getchar()
-fputc():`int fputc(int c, FILE *fp);` analogo a putchar()
+fprintf: `int fprintf(FILE *fp, char *format, ...);` analogo a printf()  
+fscanf: `int fscanf(FILE *fp, char *format, ...);` analogo a scanf()  
+fgetc:`int fgetc(FILE *fp);` analogo a getchar()
+fputc:`int fputc(int c, FILE *fp);` analogo a putchar()
 
-fread(): `size_t fread(void *ptr, size_t size, size_t nitems, FILE *file );` legge (size \* nitems) byte da file e scrive su *ptr
-fwrite(): `size_t fwrite(void *ptr, size_t size, size_t nitems, FILE *file);` scrive (size \* nitems) byte da \*ptr su file
+fread: `size_t fread(void *ptr, size_t size, size_t nitems, FILE *file );` legge (size \* nitems) byte da file e scrive su *ptr
+fwrite: `size_t fwrite(void *ptr, size_t size, size_t nitems, FILE *file);` scrive (size \* nitems) byte da \*ptr su file
 
-feof(): `int feof(FILE *fp);` restituisce vero (n > 0) se lettura è arrivata alla fine
-ferror(): `int ferror(FILE *fp);` restituisce vero (n > 0)
+feof: `int feof(FILE *fp);` restituisce vero (n > 0) se lettura è arrivata alla fine
+ferror: `int ferror(FILE *fp);` restituisce vero (n > 0)
 
-sterror(): `*char strerror(errno);` ritorna stringa di descrizione corrispondente al valore di errno, cioè al tipo di errore
-pererror():`extern void perreror(const char *__s);` stampa messaggio che descrive il valore di errno 
+sterror: `*char strerror(errno);` ritorna stringa di descrizione corrispondente al valore di errno, cioè al tipo di errore
+pererror:`extern void perreror(const char *__s);` stampa messaggio che descrive il valore di errno 
 
-fseek(): `int fseek(FILE *fp, long offset, int whence);` imposta la posizione attuale a _offset_ byte da posizione _whence_ che può essere: SEEK_SET (inizio file), SEEK_CUR (posizione corrente), SEEK_END (fine file)
-ftell(): `int ftell(FILE *file);` restituisce posizione attuale
+fseek: `int fseek(FILE *fp, long offset, int whence);` imposta la posizione attuale a _offset_ byte da posizione _whence_  
+
+- whence = SEEK_SET (inizio file), SEEK_CUR (posizione corrente), SEEK_END (fine file)  
+
+ftell: `int ftell(FILE *file);` restituisce posizione attuale
 
 - **CHIAMATE POSIX**  
 
@@ -733,15 +837,15 @@ ftell(): `int ftell(FILE *file);` restituisce posizione attuale
 1: standard output
 2: standard error
 
-open(): `int open(const char *pathname, int openflags);` restituisce il file descriptor
-creat():`int creat(const char *pathname, mode_t mode);`  equivalente a open() con flag O_CREAT | O_WRONLY | O_TRUNC
-close():`int close(int fd);` chiude il file descriptor  
-read():`ssize_t read(int fd, void *buffer, size_t nbytes);`  
-write():`ssize_t write(int fd, void *buffer, size_t n)` scrive  
-lseek():`off_t lseek(int fd, off_t offset, int whence)`    
-unlink():`int`   
-fcntl():`int fcntl(int fd, int op, .../* arg */);`  
-chmod():`int`  
+open: `int open(const char *pathname, int openflags);` restituisce il file descriptor
+creat:`int creat(const char *pathname, mode_t mode);`  equivalente a open() con flag O_CREAT | O_WRONLY | O_TRUNC
+close:`int close(int fd);` chiude il file descriptor  
+read:`ssize_t read(int fd, void *buffer, size_t nbytes);`  
+write:`ssize_t write(int fd, void *buffer, size_t n)` scrive  
+lseek:`off_t lseek(int fd, off_t offset, int whence)`    
+unlink:`int`   
+fcntl:`int fcntl(int fd, int op, .../* arg */);`  
+chmod:`int`  
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -769,25 +873,41 @@ struct stat{
 
 - **processi**
 
-<sys/types.h>
+\#include <sys/types.h>
 
-processo: unità base di esecuzione di un sistema UNIX, isolato rispetto agli altri processi
+processo: unità base di esecuzione di un sistema UNIX, isolato rispetto agli altri processi  
 
-system call per processi:
+system call per processi:  
 
-getpid(): restituisce il PID
-getppid(): restituisce il PPID
-getpgrp(): restituisce il gruppo
+getpid: restituisce il PID  
+getppid: restituisce il PPID  
+getpgrp: restituisce il gruppo  
 
-fork(): `pif_t fork()` duplica il processo, restituisce PID con padre, 0 con figlio;
+fork: `pif_t fork()` duplica il processo, restituisce PID con padre, 0 con figlio;  
 
-exec():
+exec:  
 
-wait(): `pid_t wait(int *__stat_loc );` Wait for a child to die.  When one does, put its status in *STAT_LOC
-   and return its process ID.  For errors, return (pid_t) -1.
+wait: `pid_t wait(int *__stat_loc );` Wait for a child to die.  When one does, put its status in *STAT_LOC  
+   and return its process ID.  For errors, return (pid_t) -1.  
 
-exit():
+exit:
 
-getenv(): `char getenv(const char *name);`
-setenv(): `int setenv(char *name, char *value, int overwrite);` setta una nuova variabile, overwite: 1 sovrascrive, 0 non sovrascrive  
+getenv: `char getenv(const char *name);`  
+setenv: `int setenv(char *name, char *value, int overwrite);` setta una nuova variabile, overwite: 1 sovrascrive, 0 non sovrascrive  
 
+- **pipe**
+
+pipe:
+dup2:
+
+- **segnali**
+
+\#include <signal.h>
+
+kill: `int kill(pid_t pid, int sig);` invia il segnale _sig_ al processo con PID _pid_  
+raise: `int raise(int sig);` segnale _sig_ a se stessi  
+alarm: `unsigned int alarm(unsigned int secs);` ricezione di SIGALARM dopo int secs  
+
+- **socket**
+
+- **multithreading**
