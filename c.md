@@ -682,7 +682,7 @@ kill():
 segnale può essere lanciato solo a processi dello stesso utente (salvo root)  
 si può mandare segnali a se stessi con raise() oppure alarm(secs) che causa ricezione di SIGALARM dopo intervallo di tempo in secs
 
-#### signal handling
+##### signal handling
 
 un segnale si può gestire, eseguendo una funzione ogni volta che viene ricevuto mediante:
 
@@ -747,7 +747,7 @@ sockaddr: indirizzo del socket, ovvero il nome di un socket file creato da bind(
 
 queue_size: numero massimo di client che possono rimanere in attesa
 
-#### accept e connect
+##### accept e connect
 
 per connettersi come client su cui esista un processo in ascolto:
 
@@ -769,145 +769,83 @@ flags: 0, protocollo scelto dal sistema
 
 simili a write() e read() ma con parametro aggiuntivo flags.
 
-#### funzioni viste a lezione
+#### multithreading
 
-getchar: `getchar()` legge carattere dallo standard input
-putchar: `putchar(c)` stampa carattere nello standard output  
+ogni processo può contenere uno o più thread
+eseguiti in modo indipendente ma condividono gran parte delle risorse del processo, ma separate risorse legate al proprio flusso
+l'accesso alle risorse condivise avviene in race condition  
 
-- **stringhe**
+#include pthread (POSIX thread)
 
-strlen: `int strlen( *char s)` restituisce la lunghezza di una stringa
-strncmp: `int strcmp( *char s1, *char s2, unsigned len)` confronto lessicografico di due stringhe (0 uguali, -1 altrimenti)
-strcmp: `int strcmp( *char s1, *char s2)` versione meno sicura in quanto manca lunghezza  
-strncpy: `char *strncpy( *char dest, *char source, unsigned len)` copia i primi len caratteri di source in dest  
-strncat: `char *strncat( *char dest, *char source, unsigned len)` concatena i primi len caratteri di source a dest
-strtoll:
+NOTA (serve linkare la libreria):  
+`$ clang -lpthread programma.c -o programma`  
 
-- **stampa**
+##### creare un thread
 
-printf: `printf ("stringa", %1, %2, ...)` stampa stringa nello standard output, sostituendo ogni % nella stringa al corrispondente argomento  
-scanf: `scanf("formato", &var1, &var2, ...)` legge input da standard input e lo memorizza nelle variabili passate come argomento
+pthread_create(): `int pthread_create(pthread_t *thread, pthread_attr_t *attr, void * (*start_routine) (void*), void *arg);`  
 
-sscanf: `sscanf(stringa, "formato", &var1, &var2, ... )` legge da stringa fornita come parametro invece che da standard input  
-sprintf: `sprintf(stringa, "formato", var1, var2, ...)` stampa su una stringa invece che su standard output
-snprintf: `snprintf(stringa, dimensione, "formato", var1, var2, ...)` ulteriore argomento lunghezza massima stringa (consigliata)
+ritorna 0 se non ci sono errori
 
-- **memoria dinamica**
+\*thread: puntatore a variabile che funge da handler per rappresentare thread
+\*attr: puntatore a struttura di opzioni e configurazioni aggiuntive (NULL deafult)
+\*start_routine (void \*): puntatore a una funzione che verrà eseguita dal nuovo thread (deve accettare e restituire un void\*)
+arg: puntatore a void passato come argomento alla funzione
 
-malloc: `void *malloc(unsigned n);` serve ad allocare n byte contigui, void * è un puntatore di qualsiasi tipo
-free: `free(puntatore-malloc);` serve a liberare la memoria allocata con malloc (buona norma usarlo sempre)
-realloc: `void *realloc(void *ptr, unsigned new_size);` funzione ritorna un nuovo puntatore
-calloc: `void *calloc(unsigned count, unsigned size);` alloca della memoria azzerandola precedentemente  
-
-- **chiamate ISO**
-
-`stdout`: standard output (FILE in scrittura)
-`stdin`: standard input (FILE in lettura)
-`stderr`: standard error (FILE in scrittura)
-
-fopen: `FILE *fopen(char *name, char *mode);` restituisce il puntatore del file su cui operare. \*mode può essere: "r", "w", "a", "rb", "wb"
-fclose: `int fclose(FILE *fp);` chiude il file pointer (buona norma utilizzarlo sempre)
-
-fprintf: `int fprintf(FILE *fp, char *format, ...);` analogo a printf()  
-fscanf: `int fscanf(FILE *fp, char *format, ...);` analogo a scanf()  
-fgetc:`int fgetc(FILE *fp);` analogo a getchar()
-fputc:`int fputc(int c, FILE *fp);` analogo a putchar()
-
-fread: `size_t fread(void *ptr, size_t size, size_t nitems, FILE *file );` legge (size \* nitems) byte da file e scrive su *ptr
-fwrite: `size_t fwrite(void *ptr, size_t size, size_t nitems, FILE *file);` scrive (size \* nitems) byte da \*ptr su file
-
-feof: `int feof(FILE *fp);` restituisce vero (n > 0) se lettura è arrivata alla fine
-ferror: `int ferror(FILE *fp);` restituisce vero (n > 0)
-
-sterror: `*char strerror(errno);` ritorna stringa di descrizione corrispondente al valore di errno, cioè al tipo di errore
-pererror:`extern void perreror(const char *__s);` stampa messaggio che descrive il valore di errno 
-
-fseek: `int fseek(FILE *fp, long offset, int whence);` imposta la posizione attuale a _offset_ byte da posizione _whence_  
-
-- whence = SEEK_SET (inizio file), SEEK_CUR (posizione corrente), SEEK_END (fine file)  
-
-ftell: `int ftell(FILE *file);` restituisce posizione attuale
-
-- **CHIAMATE POSIX**  
-
-\#include <unistd.h>
-\#include <fcntl.h>
-
-0: standard input
-1: standard output
-2: standard error
-
-open: `int open(const char *pathname, int openflags);` restituisce il file descriptor
-creat:`int creat(const char *pathname, mode_t mode);`  equivalente a open() con flag O_CREAT | O_WRONLY | O_TRUNC
-close:`int close(int fd);` chiude il file descriptor  
-read:`ssize_t read(int fd, void *buffer, size_t nbytes);`  
-write:`ssize_t write(int fd, void *buffer, size_t n)` scrive  
-lseek:`off_t lseek(int fd, off_t offset, int whence)`    
-unlink:`int`   
-fcntl:`int fcntl(int fd, int op, .../* arg */);`  
-chmod:`int`  
-
-#include <sys/types.h>
-#include <sys/stat.h>
-
-stat(): `int stat(const char *pathname, struct stat *out);`
-fstat(): `fstat( int filedes, struct stat *out);`
+##### thread attribute object: struct pthread_attr_t
 
 ```c
-struct stat{
-    dev_t st_dev;       // device id
-    ino_t st_ino;       // inode number
-    mode_t st_mode;     // tipo di file e permessi
-    nlink_t st_nlink;   // numero di link non simbolici
-    uid_t st_uid;       // UID
-    gid_t st_gid;       // GID
-    dev_t st_rdev;      // device type
-    off_t st_size;      // dimensione del file
-    time_t st_atime;    // tempo di ultimo accesso
-    time_t st_mtime;    // tempo di ultima modifica
-    time_t st_ctime;    // tempo di creazione
-    long st_blksize;    // dimensione del blocco
-    long st_blocks;     // numero di blocchi
-};
+struct pthread_attr_t attr;
+pthread_attr_init(&attr);
+
+pthread_create(&thread, &attr, func, arg);
+pthread_attr_destroy(&attr);
 ```
 
-- **processi**
+il valore di ogni singolo attributo X si imposta con l'apposita funzione `pthread_attr_setX()`
 
-\#include <sys/types.h>
+- `schedpolicy`: politiche di scheduling
+- `inheritsched`: se il thread eredita le policy di scheduling del thread padre
+- `scope`: specifica  
+- `schedparam`: specifica la priorità associata al thread  
 
-processo: unità base di esecuzione di un sistema UNIX, isolato rispetto agli altri processi  
+##### terminazione thread
 
-system call per processi:  
+thread termina quando la sua esecuzione principale ritorna oppure viene chiamato pthread_exit
 
-getpid: restituisce il PID  
-getppid: restituisce il PPID  
-getpgrp: restituisce il gruppo  
+```
+void pthread_exit(void *retval);
+```
 
-fork: `pif_t fork()` duplica il processo, restituisce PID con padre, 0 con figlio;  
+mentre la funzione pthread_join() permette un thread di aspettare la fine di un altro di cui abbia l'handler
 
-exec:  
+`int pthread_join(pthread_t th, void **value_ptr);`
 
-wait: `pid_t wait(int *__stat_loc );` Wait for a child to die.  When one does, put its status in *STAT_LOC  
-   and return its process ID.  For errors, return (pid_t) -1.  
+la funzione blocca il thread in attesa del thread th, il valore di ritorno viene scritto in \*value_ptr  
 
-exit:
+#### sincronizzazione di thread
 
-getenv: `char getenv(const char *name);`  
-setenv: `int setenv(char *name, char *value, int overwrite);` setta una nuova variabile, overwite: 1 sovrascrive, 0 non sovrascrive  
+i thread possono comunicare direttamente, ma devono devono essere sincronizzati causa race condition. 
+la sincronizzazione è spesso necessaria anche della gestione dei segnali
 
-- **pipe**
+##### mutex
 
-pipe:
-dup2:
+se thread prova a bloccare mutex già bloccato viene sospeso, riprende al liberarsi del mutex
 
-- **segnali**
+`pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;` inizializza il mutex
 
-\#include <signal.h>
+in seguito
+pthread_mutex_lock(&mutex);
+sezione critica che può essere eseguita un thread alla volta
+pthreaf_mutex_unlock(&mutex);
 
-kill: `int kill(pid_t pid, int sig);` invia il segnale _sig_ al processo con PID _pid_  
-raise: `int raise(int sig);` segnale _sig_ a se stessi  
-alarm: `unsigned int alarm(unsigned int secs);` ricezione di SIGALARM dopo int secs  
+##### condition variable
 
-- **socket**
+condition variable segnala un evento, un thread può sospendersi in attesa di qualcosa sulla condition variable oppure un thread può svegliare thread in attesa per segnalare  
 
-- **multithreading**
+`pthread_cond_t var = PTHREAD_COND_INITIALIZER;` inizializza la condition variable  
+
+successivamente posso:
+`int pthread_cond_wait(pthread_cond_t *cond, pthread_mutex_t *mutex)`  
+
+cond: puntatore alla variabile
+mutex: puntatore al mutex

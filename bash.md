@@ -1,6 +1,7 @@
-### SCHEMI BASH  
+### SCHEMI BASH
 
 I file sono riferiti con il PATHNAME:  
+
 - assoluto: `/home/bianchi/progetto/a`  
 - relativo: `progetto/a` ~pwd: `/home/bianchi`  
 
@@ -14,7 +15,7 @@ logout
 uscire dalla shell: `$ exit`  
 pulire lo schermo: `$ clear`  
 
-##### HISTORY 
+##### HISTORY
 
 Come vedere lista comandi: `$ history`  &rarr; [num. evento] [evento = comando]  
 rieseguire ultimo comando: `$ !!`  
@@ -60,48 +61,62 @@ sostituzione eventi: `:s` `/` `[stringa da cercare]` `/` `[nuova stringa]`
 \\t: tab
 
 
-#### FILE E DIRECTORY  
+#### COMANDI PER MANIPOLARE FILE E DIRECTORY  
 
-cartella corrente: `$ pwd`  
-spostarsi cartella: `$ cd [pathname]`  (nota: per accedere serve permesso esecuzione)  
-spostarsi home: `$ cd` (senza argomenti)  
+- spostarsi tra le cartelle
+
+
+cartella corrente: `$ pwd` es     `$ /home/user`
+spostarsi cartella: `$ cd [pathname]`  (nota: accesso serve permesso esecuzione) es: `$ cd /home/andrea/Downloads`
+spostarsi sottocartella pwd: `$ cd [nome_cartella]` es. in /home `$ cd andrea`  
+spostarsi home: `$ cd` (senza argomenti)  oppure `$ cd ~`
 spostarsi nella dir madre: `$ cd ..`  
 creare cartella: `$ mkdir [nome]`  
-creare più cartelle: `$ mkdir [path]/{dir1, dir2, dir3}`   &rarr; crea 3 cartelle dentro nel percorso  
+creare più cartelle: `$ mkdir [path]/{dir1, dir2, dir3}`   &rarr; crea 3 cartelle dir1, dir2, dir3 dentro nel percorso _path_
 rimuovere cartella: `$ rmdir [nome]`  
-rimuovere file: `$ rm [argomenti] f1`  
+rimuovere file: `$ rm [argomenti] f1`  argomenti: -r (recursive), -d (empty dir), -i (prompt before), -f (force)
 
 visualizzare elenco file:  
+
 >`$ls` [argomenti] [pathname]  
 
 > *argomenti*:
->`-l` :long  
->`-a` :nascosti  
->`-al` :nascosti & long  
->`-t`:in ordine di ultima modifica  
->`-S`:in ordine di dimensione decrescente  
->`-r`:in ordine inverso  
->`-R`:sottocartelle  
->`-d`:lista le cartelle in sé, non le sottocartelle
+>`-l` : long  
+>`-a` : nascosti  
+>`-al`: nascosti & long  
+>`-t`: in ordine di ultima modifica  
+>`-S`: in ordine di dimensione decrescente  
+>`-r`: in ordine inverso  
+>`-R`: sottocartelle  
+>`-d`: lista le cartelle in sé, non le sottocartelle
 
-visualizzare elenco file per estensione: `$ ls [arg] *.estensione ` 
+visualizzare elenco file per estensione: `$ ls [arg] path/*.estensione`, nella _pwd_ basta `ls *.estensione` 
 
-visualizzazione `$ ls -l`  
+```
+$ ls -r /home/andrea/Documents/*.txt
+> /home/andrea/Documents/c.txt
+  /home/andrea/Documents/b.txt
+```
+
+visualizzazione `$ ls -l` 
 
 [tipofile] [permessi] [num hardlink] [proprietario] [nomegruppo] [dim] [data ultima mod] [nomefile]  
 
-`-rwxrwxrwx 1 root root 5395 Jul 13 1998 ciao.txt  `
+```
+-rwxrwxrwx      1 root      root     5395 Jul 13 1998 ciao.txt  
+lrwxrwxrwx      1 root      root        4 Dec  5 2000 awk -> gwak
+```
 
-tipofile: - file, d directory, l link, b block device, c character device  
-cambiare i permessi: `$ chmod [arg] [file]`  
+tipofile: - file, d directory, l link, b block device, c character device (prima lettera)
+
+cambiare i permessi: `$ chmod [arg] [file]`  es 
 metodo ottale: `$ chmod 744 file` &rarr; `$ chmod 111 100 100 f1` [rwxr--r--]  
 metodo classico: `$ chmod u=rwx go=r f1`     u=owner, g=group, o=world  
 = imposta i comandi esattamente come seguono `$ chmod g=r`  &rarr; r--  
 \+ aggiunge permessi che seguono `$ chmod g+r f1`  (-w- &rarr; rw-)  
 \- toglie i permessi che seguono `$ chmod g-r f1` (rw- &rarr; -w-)  
 
-copiare un file f1 in f2: `$ cp [f1] [f2]`    &rarr; f2 può non esistere  
-    `-r` : ricorsivo  
+copiare un file f1 in f2: `$ cp [f1] [f2]`    &rarr; f2 può non esistere    
 copiare: `$ cp [options]`  
 copiare più file in una dir: `$ cp [f1] ... [fn] [dir1]`  &rarr; obbligo cartella ultimo argomento  
 spostare/rinominare file: `$ mv f1 f2`  
@@ -258,23 +273,45 @@ tipo E:
 \+ : una o più ripetizioni dell'elemento precedente  
 ? : zero o una ripetizioni dell'elemento precedente
 {j,k} : un numero di ripetizioni compreso tra j e k dell'elemento precedente  
-s|t : l'elemento s oppre l'elemento t
+s|t : l'elemento s oppure l'elemento t
 (exp) : raggruppamento di exp come singolo elemento
 
+esempi:
+
+```c
+$ fgrp rossi /etc/passwd     //out: linee di /etc/passwd che contengono stringa fissata rossi
+
+$ egrep -nv '[agt]+' relazione.txt //out: linee relazione.txt che NON hanno stringhe composte dai char a,g,t
+
+$ grep -w print *.c   //out: le linee di tutti i file .c che contengono la parola intera print
+
+$ ls -al . | grep '^d.......w.'  //out: le sottodirectory della pwd modificabili dagli utenti ordinari
+
+$ egrep '[a-c]+z' doc.txt //out: linee doc.txt con stringa prefisso non nullo costituito da a,b,c seguito da z
+```
 
 ###### ordinare linee input:  
 
 `$ sort` (default: alfabetico)  
 prende in input delle linee di testo, le ordina secondo le opzioni e le invia in output  
->*opzioni*:  
+>_opzioni_:  
 >`-b` ignora spazi chiavi di ordinamento  
 >`-f` ignora distinzione maiuscole/minuscole  
 >`-n` considera numerica la chiave di ordinamento  
 >`-r` ordina in modo decrescente  
 >`-o [f1]` invia output al file f1  
->`-t [s]` usa s come separatore di campo  
->`-k s1,s2` usa i campi da s1 a s2 come chiavi di ordinamento, i successivi in caso di pareggio  
+>`-t[c]` usa s come separatore di campo(es `-t:` oppure `-t' '`)
+>`-k s1,s2` usa i campi da s1 a s2 come chiavi di ordinamento, i successivi in caso di pareggio  (si conta partendo da 1)
 >`-s` rende stabile il confronto, senza passare ai successivi in caso di pareggio  
+
+esempi:
+
+```c
+sort -t: -k3,3 -n /etc/passwd  //ordina le righe di etc/passwd in ordine numerico (-n) in base al terzo campo
+> root:x:0:blablabla
+  daemon:x:1:blablabla
+  bin:x:2:blablabla
+```
 
 ###### conversione di carattere: 
 
@@ -287,19 +324,37 @@ prende in input delle linee di testo, le ordina secondo le opzioni e le invia in
 >`-s` squeeze, compressione  
 >`-d` cancella caratteri  
 
+esempi:
+
+```c
+$ tr a-z A-Z //converte minuscole in maiuscole
+$ tr -c A-Za-z0-9 ' ' //sostituisce caratteri NON alfanumerici con spazi (opzione -c)
+$ tr -d str //cancella caratteri contenuti nella stringa str
+```
+
 ###### estrarre colonne specifiche da linee di testo in input: 
 
-`$ cut `
+`$ cut`
 
->*opzioni:*  
+>_opzioni:_  
 >`-d` separatore (se non specificato \<Tab>)  
 >`-f` campo da estrarre (partono da 1)
 
-es. `$ cut -d: -f2`
+esempio
 
-###### combinare due righe corrispondenti di due file: 
+```c
+$ cut -d: -f1 /etc/passwd
+>root
+ daemon
+```
 
-`$ paste f1 f2` (delimitatore default : \<tab>)  
+###### combinare due righe corrispondenti di due file:
+
+`$ paste f1 f2` (combina le righe corrisponendi di un file inserendo un delimitatore, default : \<tab>)  
+
+```c
+
+```
 
 ###### editare testo passato da un comando all'altro in una pipeline:  
 
@@ -308,15 +363,24 @@ il comportamento standard è stampare in standard output le linee in input
 salvo specifiche di indirizzo applica l'azione a tutte le linee in input
 gli indirizzi di linea possono essere specificati come numeri o espressioni regolari.
 
-
 >opzioni:  
 >`-e` in caso di più azioni, precede le azioni  
 >`-f` specifica file da cui leggere le azioni da fare  
 
+```c
+$ sed '4,$d' /etc/passwd  //stampa prime 3 righe, cancella da output a partire dalla 4
+
+$ sed 3q /etc/passwd //stampa prime 3 righe, sed esce dopo aver elaborato la 3
+
+$sed  /sh/y/:0_%/  /etc/passwd  //sostituisce nelle le righe con "sh" il char : con _ e il char 0 con %
+
+$sed  '/sh/!y/:0/_%/'  /etc/passwd //analogo ma nelle stringhe che non contengono sh. quoting ' ' per !
+```
+
 sostituzione testo con sed:  
 >`$ sed s/[expr]/[new]/[flags]`  
 
-*s*: substitute, *expr*: stringa da cercare, *new*: stringa da sostituire  
+_s_ : substitute, _expr_ : stringa da cercare, _new_ : stringa da sostituire  
 >flag possibili:  
 >`num` tra `1` e `9` (quale occorrenza di expr sostituita, default `1` = prima)  
 >`g`: ogni occorrenza sostituita  
@@ -324,7 +388,13 @@ sostituzione testo con sed:
 >`n`: silent mode, senza emettere output  
 >`w [file1]`: in caso di sostituzione la linea corrente viene accodata in file1  
 
-#### SCRIPT
+```c
+$ sed '/^root/,/^bin/s/:x:/::/w disabled.txt' /etc/passwd
+
+$ cat /etc/passed | sed 's?/bin/.*sh$?/usr/local&?'
+```
+
+#### SCRIPTING
 
 programma interpretato dalla shell scritto in comandi UNIX. Viene eseguito in una sottoshell della shell corrente.   
 
