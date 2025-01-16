@@ -1,4 +1,20 @@
-### SCHEMI BASH
+# SCHEMI BASH
+
+## Indice
+
+1) [Shell & sessione](#shell--sessione)
+2) [History](#history)
+3) [Metacaratteri](#metacaratteri)
+4) [Quoting](#quoting)
+5) [Caratteri speciali](#caratteri-speciali)
+6) [Comandi per manipolare file e directory](#comandi-per-manipolare-file-e-directory)
+7) [Visualizzazione](#visualizzazione)
+8) [Inode e link](#inode-e-link)
+9) [Filtro](#filtro)
+10) [Scripting](#scripting)
+11) [Controllo di flusso](#controllo-di-flusso)
+
+
 
 I file sono riferiti con il PATHNAME:  
 
@@ -7,7 +23,7 @@ I file sono riferiti con il PATHNAME:
 
 NOTA: `dir1/*` rappresenta il nome di tutti i file dentro la cartella dir1  
 
-#### SHELL & SESSIONE  
+#### SHELL & SESSIONE
 
 bash e altri tipi di SHELL  
 logout  
@@ -80,7 +96,7 @@ visualizzare elenco file:
 
 >`$ls` [argomenti] [pathname]  
 
-> *argomenti*:
+> _argomenti_:
 >`-l` : long  
 >`-a` : nascosti  
 >`-al`: nascosti & long  
@@ -98,7 +114,7 @@ $ ls -r /home/andrea/Documents/*.txt
   /home/andrea/Documents/b.txt
 ```
 
-visualizzazione `$ ls -l` 
+visualizzazione `$ ls -l`  
 
 [tipofile] [permessi] [num hardlink] [proprietario] [nomegruppo] [dim] [data ultima mod] [nomefile]  
 
@@ -128,10 +144,10 @@ confronto file:
 `$ cmp f1 f2` &rarr; primo byte e numero di linea in cui f1 e f2 differiscono  
 `$ diff f1 f2` &rarr; lista di cambiamenti da apportare in f1 per renderlo come f2  
 
-ricercare un file: 
+ricercare un file:  
 `$ find [pathnames] [expression]`  
 attraversa ricorsivamente le directory in [pathnames] applicando le regole [expression]  
-expression può essere: *opzione*, *condizione*, *azione*
+expression può essere: _opzione_, _condizione_, _azione_
 
 esempi:  
 `$ find . -name '*.c' -print` , ricerca ricorsivamente a partire dalla directory corrente tutti i file .c e li stampa
@@ -153,7 +169,7 @@ stampare informazioni riguardo user che sono loggati correntemente:`$ who [opzio
 vedere i processi dell'utente associati al terminale corrente:  
 `$ ps  [argomenti]`  
 
-> *argomenti*:
+> _argomenti_:
 >`-a`: tutti i processi di un terminale  
 >`-f`: full listing  
 >`-e`: anche processi non associati a un terminale  
@@ -389,14 +405,22 @@ _s_ : substitute, _expr_ : stringa da cercare, _new_ : stringa da sostituire
 >`w [file1]`: in caso di sostituzione la linea corrente viene accodata in file1  
 
 ```c
-$ sed '/^root/,/^bin/s/:x:/::/w disabled.txt' /etc/passwd
+$ sed '/^root/,/^bin/s/:x:/::/w disabled.txt' /etc/passwd 
+//sostituisce(s) la x (in :x:) con la stringa vuota (quindi ::) 
+//nelle righe in input comprese fra quella che inizia(^) con root e quella con bin;
+//tali righe sono accodate poi in disabled.txt
 
 $ cat /etc/passed | sed 's?/bin/.*sh$?/usr/local&?'
+//cerca tutte righe in input in cui compare /bin/.*sh$ 
+// e sostituisce quest'ultima con /user/local/bin/.*sh$ (& = stringa cercata)
+// ? serve da separatore tra s e / in quanto anche questo compare nella stringa
+//quoting '' necessario per evitare interpretazioni della shell
 ```
 
 #### SCRIPTING
 
-programma interpretato dalla shell scritto in comandi UNIX. Viene eseguito in una sottoshell della shell corrente.   
+programma interpretato dalla shell scritto in comandi UNIX. Viene eseguito in una sottoshell della shell corrente.
+Nota: si commenta con il char \#  
 
 `set -x` : visualizza i comandi nel momento in cui li esegue
 `set -v` : visualizza i comandi nel momento in cui li legge
@@ -415,7 +439,22 @@ promuovere a variabile globale (_variabile d'ambiente_): `export`
 >`PATH`: lista di pathname in cui la shell cerca i comandi  
 >`HOME`: pathname assoluto della home directory  
 
-variabili speciali (parametro): `$1,$2,...,$9` associate al primo, ... , nono parametro _passati su linea di comando_  
+variabili speciali (parametro): `$1,$2,...,$9` associate al primo, ... , nono parametro _passati su linea di comando_ 
+
+esempio script "copia"
+```
+testo dello script:
+mkdir $1
+mv $2 $1/$2
+```
+
+esecuzione
+
+```
+$ ./copia nuovadir testo
+> ls nuovadir
+testo
+```
 
 aumentare numero parametri con shift a sx: `shift [n]`  
 
@@ -430,17 +469,31 @@ variabili di stato:
 \$* : lista dei parametri passati allo script su linea di comando  
 \$@ : lista dei parametri passati allo script su linea di comando
 
-
 ###### CONTROLLO DI FLUSSO
 
 COSTRUTTO IF
 
-    if condition_command  (condition exit status)
-    then (exit 0)  
-        true_commands  
-    else (exit =/= 0)  
-        false_commands  
-    fi  
+```
+if condition_command  (condition exit status)
+then (exit 0)  
+    true_commands  
+else (exit =/= 0)  
+    false_commands  
+fi  
+```
+
+esempio:
+
+```
+if grep"^$1" /etc/passwd >/dev/null 2>/dev/null
+then
+    echo $1 is a valid login name
+else
+    echo $1 is not a valid login name
+fi
+
+exit 0
+```
 
 ###### in caso non sia valutabile l'exit status
 
@@ -455,14 +508,14 @@ COSTRUTTO IF
 >`-w [f]`: 0 se f esiste ed è scrivibile  
 >`-x [f]`: 0 se f esiste ed è eseguibile  
 
-- espressioni su *stringhe*  
+- espressioni su _stringhe_  
 
 >`-z str`: 0 se str è lunga 0  
 >`-n str`: 0 se str non è lunga 0  
 >`str1 = str2`: 0 se str1 è uguale a str2 (nota = con spazi è confronto)  
 >`str1 != str2`: 0 se str1 è diversa da str2  
 
-- espressioni su *valori numerici*:  
+- espressioni su _valori numerici_:  
 
 >`num1 -eq num2`: 0 se uguali  
 >`num1 -ne num2`: 0 se diversi  
@@ -471,7 +524,7 @@ COSTRUTTO IF
 >`num1 -le num2`: 0 se num1 <= num2  
 >`num1 -ge num2`: 0 se num1 >= num2 
 
-- *espressioni composte*:  
+- _espressioni composte_:  
 
 >`exp1 -a exp2`: 0 se entrambe vedere (and)  
 >`exp1 -o exp2`: 0 se è vera exp1 o exp2 (or)  
@@ -480,52 +533,128 @@ COSTRUTTO IF
 
 costruzioni numeri complesse: `$[espressione]` Nota: le quadre vanno messe  
 
+esempio:
+
+```
+> num1=2
+> num1=$[$num1*3+1]
+> echo $num1
+7
+```
+
 CICLO WHILE (finché vero continuo)  
 
-    while condition_command  
-    do  
-        commands  
-    done  
+```
+while condition_command  
+do  
+    commands  
+done  
+```
+
+```py
+while test -e $1   #finché file primo argomento esiste
+do
+    sleep 2        #sospenditi 2 secondi
+done
+
+echo file $1 does not exist  #se non esiste stampa questo
+exit 0
+```
 
 finché la condition_command è vera vengono eseguiti i comandi  
 
 CICLO UNTIL (finché falso continuo)  
 
-    until condition_command  
-        do  
-            commands  
-        done  
+```
+until condition_command  
+    do  
+        commands  
+    done
+```
+
+```py
+until false #sempre verificata
+do
+    read firstword restofline #apre stdout e arg1=firstword, resto=restofline
+    if test $firstword = end 
+    then
+        exit 0
+    else
+        echo $firstword $restofline #echo e ricomincia finché arg1 = end
+    fi
+done    
+```
+
+
 finché la condition_command è falsa vengono eseguiti i comandi  
 
 CICLO FOR  
 
-    for var in wordlist  
-    do  
-        commands  
-    done  
+```
+for var in wordlist  
+do  
+    commands  
+done  
+```
+
+esempio uso classico:
+
+```py
+for i in 1 2 3 4 5
+do
+    echo the value of i is $1
+done                            #stamperà 5 volte "the value of..."
+exit 0
+```
+
+nota: puoi usare il for anche per scorrere i file presenti in una cartella:
+esempio:
+
+```py
+for i in $1/*    #$1 è una cartella, scorre tutti i file della cartella
+```
 
 CASE SELECTION  
 
-    case string in  
-    expression_1)  
-        commands_1  
-        ;;  
-    expression_2)  
-        commands_2  
-        ;;  
-    ...  
-    *)  
-    default_commands  
+```
+case string in  
+expression_1)  
+    commands_1  
     ;;  
-    esac  
+expression_2)  
+    commands_2  
+    ;;  
+...  
+*)  
+default_commands  
+;;  
+esac  
+```
+esempio script append:
+
+```py
+case $# in    #numeri degli argomenti ($#)
+1)                  #caso $# = 1
+    cat >>$1 #apri std input e poi redireziona out in $1
+    ;;
+2)                # caso $# = 2
+    cat >>$1 <$2 #append testo $2 in $1 
+    ;;
+*)             # tutti altri casi (default)
+    echo "usage: append out_file [in_file]" 
+    ;;
+esac
+exit 0
+```
 
 COMMAND SUBSTITUTION  
 sostituire a un comando o pipeline quanto stampato sullo standard output dal comando stesso prevede uso dei \` \` backquote  
 esempio :  
 
-    > date  
-    Tue Nov 19 17:50:10 2002  
-    > vardata=`date`  
-    > echo $vardata  
-    Tue Nov 19 17:51:28 2002  
-
+```
+> date  
+Tue Nov 19 17:50:10 2002  
+> vardata=`date`  
+> echo $vardata  
+Tue Nov 19 17:51:28 2002  
+```
