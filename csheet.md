@@ -31,10 +31,11 @@ int strcmp(char *s1, char *s2); // versione meno sicura senza lunghezza
 char *strncpy(char *dest, char *source, unsigned len); //copia i primi len char di source in dest
 char *strncat(char *dest, char *source, unsigned len); //concatena i primi len char di source a dest
 long long strtoll(const char *str, char **endptr, int base); // converte stringa in long long
+extern char *strchr(const char *__s, int __c); //trova la prima occorrenza di c (puoi usare 'c') in s
+
 
 ERRORE: char *stringa = "testo della stringa";
 ```
-
 
 - **stampa**
 
@@ -173,6 +174,10 @@ int dup2(int oldfd, int newfd); // duplica un file descriptor
 int kill(pid_t pid, int sig); // invia il segnale _sig_ al processo con PID _pid_
 int raise(int sig); // invia il segnale _sig_ a se stessi
 unsigned int alarm(unsigned int secs); // ricezione di SIGALRM dopo int secs
+```
+
+```
+Segnali ()
 ```
 
 - **socket**

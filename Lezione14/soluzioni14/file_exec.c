@@ -8,7 +8,7 @@
 #include "freadline.h"
 
 int exec_line(char *line, int cmdargc, char **cmdargs);
-char **argsdup(int argc, char **args, char *line); //duplica linea di comanfo
+char **argsdup(int argc, char **args, char *line); //duplica linea di comando
 
 int main(int argc, char **argv)
 {
