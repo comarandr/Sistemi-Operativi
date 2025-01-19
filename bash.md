@@ -563,6 +563,18 @@ exit 0
 
 finché la condition_command è vera vengono eseguiti i comandi  
 
+DO-WHILE: non c'è, alternativa
+
+```py
+while true; do
+    #comandi
+    if condizione terminazione; then
+        #comandi
+        break
+    fi
+done
+```
+
 CICLO UNTIL (finché falso continuo)  
 
 ```

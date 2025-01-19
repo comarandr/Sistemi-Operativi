@@ -230,8 +230,9 @@ char *strncpy(char *dest, char *source, unsigned len);
  //copia i primi len char di source in dest
 char *strncat(char *dest, char *source, unsigned len);
  //concatena i primi len char di source a dest
-long long strtoll(const char *str, char **endptr, int base);
- // converte stringa in long long
+long int strtoll(const char *str, char **endptr, int base); //#include <stdlib.h>
+ //converte stringa in long, se ci sono caratteri intrusi finiscono in endptr 
+ //se processo avvenuto correttamente, endptr dovrebbe valere 0
 extern char *strchr(const char *formato, int __c); 
 //trova la prima occorrenza di c (puoi usare 'c') in s
 
@@ -307,6 +308,7 @@ int fprintf(FILE *fp, char *format, ...); // analogo a printf() con stdout
 int fscanf(FILE *fp, char *format, ...); // analogo a scanf() con stdin
 int fgetc(FILE *fp); // analogo a getchar()
 int fputc(int c, FILE *fp); // analogo a putchar()
+int fgets(char *dest, int dim, FILE *fp);
 
 size_t fread(void *ptr, size_t size, size_t nitems, FILE *file); 
 // legge (size * nitems) byte da file e scrive su *ptr
